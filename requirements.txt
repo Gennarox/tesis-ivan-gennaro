@@ -1,0 +1,7 @@
+pandas
+numpy
+jupyterlab
+curl_cffi
+openpyxl
+pydantic
+selectolax
