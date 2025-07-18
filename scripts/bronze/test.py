@@ -1,23 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
+import os
+import curl_cffi
 
-# In[2]:
+# Print Hello World
+print("Hello, world!")
 
+# Create outputs folder if it doesn't exist
+os.makedirs("outputs", exist_ok=True)
 
-# tHE BEST libraries
-import pandas
-
-
-# In[3]:
-
-
-test = 1
-
-
-# HAHAHA this is a markdown
-
-# In[4]:
-
-
-print("Hello world")
-
+# Save empty text file
+with open("outputs/empty.txt", "w") as f:
+    pass  # creates an empty file
