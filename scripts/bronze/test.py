@@ -1,5 +1,4 @@
 import os
-import curl_cffi
 
 # Print Hello World
 print("Hello, world!")
