@@ -15,9 +15,13 @@ WORKDIR /app
 
 # Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip uninstall -y cffi && \
+    pip install --no-cache-dir --no-binary cffi cffi
 
 # Copy the rest of the app
 COPY . .
 
 # Default command
+CMD ["bash"]
