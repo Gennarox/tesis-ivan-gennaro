@@ -1,0 +1,15 @@
+{
+  "name": "tesis-ivan-gennaro",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ],
+  "postCreateCommand": "pip install -r /app/requirements.txt",
+  "remoteUser": "root"
+}

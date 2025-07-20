@@ -1,24 +1,27 @@
 FROM python:3.11-slim
 
 # Set environment to non-interactive
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install system dependencies needed for building Python packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libffi-dev \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+# ENV DEBIAN_FRONTEND=noninteractive 
 
 # Set working directory
 WORKDIR /app
 
+# Install OS dependencies
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+    # build-essential \
+    # python3-dev \
+    # && rm -rf /var/lib/apt/lists/*
+
+# Install OS dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Python dependencies
 COPY requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt && \
-    pip uninstall -y cffi && \
-    pip install --no-cache-dir --no-binary cffi cffi
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the app
 COPY . .
