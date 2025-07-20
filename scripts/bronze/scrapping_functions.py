@@ -2,9 +2,11 @@ import requests
 import random
 import time
 import json
+from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from pathlib import Path
+from pydantic import ValidationError
+from typing import Union
 
 # Opciones de User-Agent impersonation
 USER_AGENTS = [
@@ -16,19 +18,41 @@ USER_AGENTS = [
     "(KHTML, like Gecko) Version/15.4 Safari/605.1.15"
 ]
 
-def get_json_from_url(url, use_random_wait=True):
+def get_json_from_url(
+    url: str,
+    use_random_wait: bool = True,
+    fixed_user_agent: str = None,
+    silent: bool = False
+):
+    """
+    Realiza un GET y devuelve el JSON parseado.
+    
+    Parámetros:
+        url (str): La URL a solicitar.
+        use_random_wait (bool): Si `True`, aplica un tiempo de espera aleatorio.
+        fixed_user_agent (str): User-Agent fijo opcional (si no se pasa, se elige aleatoriamente).
+        silent (bool): Si `True`, omite los prints de log.
+
+    Retorna:
+        dict o None
+    """
+    user_agent = fixed_user_agent or random.choice(USER_AGENTS)
+
     headers = {
-        "User-Agent": random.choice(USER_AGENTS),
-        "Accept": "application/json",
+        "User-Agent": user_agent,
+        "Accept": "application/json"
     }
 
     if use_random_wait:
         wait_time = random.uniform(2.5, 8.0)
-        print(f"[⏱️] Esperando {wait_time:.2f}s para simular comportamiento humano...")
+        if not silent:
+            print(f"[⏱️] Esperando {wait_time:.2f}s...")
         time.sleep(wait_time)
 
-    try:
+    if not silent:
         print(f"[🌐] Solicitando: {url}")
+
+    try:
         response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         return response.json()
@@ -49,6 +73,11 @@ def save_json(data, name: str, subfolder: str = ""):
     output_dir = base_path / "outputs" / subfolder
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Convertir datetime a string si existe
+    for item in data:
+        if isinstance(item.get("ingestion_time"), datetime):
+            item["ingestion_time"] = item["ingestion_time"].isoformat()
+
     timestamp = datetime.now(ZoneInfo("America/Asuncion")).strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"{name}_{timestamp}.json"
 
@@ -56,3 +85,32 @@ def save_json(data, name: str, subfolder: str = ""):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"[💾] Guardado en: {output_dir / filename}")
+
+def parse_json_to_model(json_data: Union[dict, list], model_class, supermarket: str) -> list:
+    """
+    Convierte una respuesta JSON en una lista de instancias validadas del modelo Pydantic.
+    """
+    if not json_data:
+        return []
+
+    items = json_data.get("items") if isinstance(json_data, dict) else json_data
+    if not isinstance(items, list):
+        raise ValueError("json_data debe ser una lista o un diccionario con clave 'items'")
+
+    ingestion_time = datetime.now(ZoneInfo("America/Asuncion"))
+
+    models = []
+    for item in items:
+        enriched = {
+            **item,
+            "ingestion_time": item.get("ingestion_time") or ingestion_time,
+            "supermarket": supermarket
+        }
+
+        try:
+            models.append(model_class(**enriched))
+        except ValidationError as e:
+            print("[❌] Error de validación para item:")
+            print(e.json(indent=2))
+
+    return models

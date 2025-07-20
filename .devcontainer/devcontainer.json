@@ -1,7 +1,7 @@
 {
   "name": "tesis-ivan-gennaro",
   "build": {
-    "dockerfile": "../Dockerfile"
+    "dockerfile": "../Dockerfile.dev"
   },
   "settings": {
     "python.defaultInterpreterPath": "/usr/local/bin/python"
