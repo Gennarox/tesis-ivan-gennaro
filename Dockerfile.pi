@@ -1,23 +1,17 @@
 FROM python:3.11-slim
 
 # Set environment to non-interactive
-# ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive 
 
 # Set working directory
 WORKDIR /app
 
 # Install OS dependencies
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-    # build-essential \
-    # python3-dev \
-    # && rm -rf /var/lib/apt/lists/*
-
-# Install OS dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    curl \
-    git \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Install Python dependencies
 COPY requirements.txt .
