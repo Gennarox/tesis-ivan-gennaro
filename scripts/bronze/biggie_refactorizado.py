@@ -20,8 +20,7 @@ from pydantic_model import categories, products
 
 # %%
 json_response = get_json_from_url(
-    url = "https://api.app.biggie.com.py/api/classifications/web?take=-1&storeType=", 
-    fixed_user_agent = False
+    url = "https://api.app.biggie.com.py/api/classifications/web?take=-1&storeType="
 )
 
 # %%
@@ -47,7 +46,7 @@ df.head()
 # ##### Productos
 
 # %%
-categories = df["slug"][16:-3].unique() # [15:-3] subset for testing
+categories = df["slug"].unique() # [16:-2] subset for testing
 np.random.shuffle(categories)
 print(f"Number of categories -> {categories.size}")
 categories
@@ -62,6 +61,7 @@ total_calls = 0
 for i, category in enumerate(categories, start=1):
     print(f"[{i}/{len(categories)}] Scrapeando categoría: {category}")
     skip = 0
+    page = 1
 
     while True:
         url = (
@@ -73,10 +73,10 @@ for i, category in enumerate(categories, start=1):
 
         try:
             data = get_json_from_url(
-                url = url, 
-                use_random_wait = True,
-                fixed_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ",
-                silent = True
+                url=url, 
+                use_random_wait=True,
+                fixed_user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                silent=True
             )
         except Exception as e:
             print(f"[❌] Fallo en categoría {category}, skip={skip}: {e}")
@@ -93,7 +93,10 @@ for i, category in enumerate(categories, start=1):
             item["ingestion_time"] = NOW
 
         all_items.extend(items)
+
+        print(f"    ↳ Página {page}: {len(items)} productos")
         skip += NumberResults
+        page += 1
 
 print(f"\n✅ Fin del scraping: {len(all_items)} productos recolectados en {total_calls} requests.")
 
@@ -104,16 +107,16 @@ save_json(
     subfolder="biggie/products"
 )
 
-# %%
-if all_items :
-    products_model = parse_json_to_model(
-        json_data = all_items, 
-        model_class = products, 
-        supermarket = 'biggie'
-    )
+# %% [markdown]
+# if all_items :
+#     products_model = parse_json_to_model(
+#         json_data = all_items, 
+#         model_class = products, 
+#         supermarket = 'biggie'
+#     )
 
-# %%
-df = pd.DataFrame([c.model_dump() for c in products_model])
-df.head()
+# %% [markdown]
+# df = pd.DataFrame([c.model_dump() for c in products_model])
+# df.head()
 
 

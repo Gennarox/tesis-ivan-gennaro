@@ -20,27 +20,33 @@ USER_AGENTS = [
 
 def get_json_from_url(
     url: str,
+    method: str = "GET",
+    payload: Union[dict, list] = None,
     use_random_wait: bool = True,
     fixed_user_agent: str = None,
     silent: bool = False
 ):
     """
-    Realiza un GET y devuelve el JSON parseado.
-    
+    Realiza una solicitud HTTP (GET o POST) y devuelve el JSON parseado.
+
     Parámetros:
-        url (str): La URL a solicitar.
-        use_random_wait (bool): Si `True`, aplica un tiempo de espera aleatorio.
-        fixed_user_agent (str): User-Agent fijo opcional (si no se pasa, se elige aleatoriamente).
-        silent (bool): Si `True`, omite los prints de log.
+        url (str): URL a solicitar.
+        method (str): 'GET' o 'POST'.
+        payload (dict | list): Datos para enviar si el método es POST.
+        use_random_wait (bool): Espera aleatoria antes de la solicitud.
+        fixed_user_agent (str): User-Agent fijo (opcional).
+        silent (bool): Si True, omite prints de log.
 
     Retorna:
         dict o None
     """
+    method = method.upper()
     user_agent = fixed_user_agent or random.choice(USER_AGENTS)
 
     headers = {
         "User-Agent": user_agent,
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "Content-Type": "application/json"
     }
 
     if use_random_wait:
@@ -50,10 +56,16 @@ def get_json_from_url(
         time.sleep(wait_time)
 
     if not silent:
-        print(f"[🌐] Solicitando: {url}")
+        print(f"[🌐] {method} → {url}")
 
     try:
-        response = requests.get(url, headers=headers, timeout=15)
+        if method == "GET":
+            response = requests.get(url, headers=headers, timeout=60)
+        elif method == "POST":
+            response = requests.post(url, headers=headers, json=payload, timeout=60)
+        else:
+            raise ValueError("Método HTTP no soportado: usa 'GET' o 'POST'.")
+
         response.raise_for_status()
         return response.json()
     except Exception as e:
