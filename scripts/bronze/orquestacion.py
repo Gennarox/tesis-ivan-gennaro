@@ -2,7 +2,9 @@ import subprocess
 
 scripts = [
     ("Biggie", "biggie_refactorizado.py"),
-    ("Supermecado Real", "real_refactorizado.py")
+    ("Supermecado Real", "real_refactorizado.py"),
+    ("Super Seis", "s6_refactorizado.py"),
+    ("Stock", "stock.py")
 ]
 
 print("🚀 Iniciando orquestación de scrapers...\n")
