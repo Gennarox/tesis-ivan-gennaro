@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  webscrapping:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi   # Usa el Dockerfile de la Raspberry
+    container_name: tokito
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+    command: python scripts/bronze/orquestacion.py
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
