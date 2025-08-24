@@ -3,9 +3,9 @@ import time
 
 # Lista de scripts por supermercado
 scripts = [
-    ("Biggie", "biggie_refactorizado.py"),
-    ("Supermecado Real", "real_refactorizado.py"),
-    ("Super Seis", "s6_refactorizado.py"),
+    ("Biggie", "biggie.py"),
+    ("Supermecado Real", "real.py"),
+    ("Super Seis", "s6.py"),
     ("Stock", "stock.py"),
     ("Casa Rica", "casa_rica.py")
 ]
