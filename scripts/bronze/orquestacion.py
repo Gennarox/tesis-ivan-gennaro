@@ -1,5 +1,8 @@
 import subprocess
 import time
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent
 
 # Lista de scripts por supermercado
 scripts = [
@@ -19,7 +22,8 @@ for name, script in scripts:
     for attempt in range(1, 4):  # Hasta 3 intentos
         try:
             print(f"🔁 Intento {attempt} para {name}...")
-            subprocess.run(["python3", script], check=True)
+            script_path = BASE_DIR / script
+            subprocess.run(["python3", str(script_path)], check=True)
             print(f"✅ {name} finalizado correctamente.")
             success = True
             break  # Salir del loop si tuvo éxito
