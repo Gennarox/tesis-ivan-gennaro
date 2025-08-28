@@ -50,7 +50,7 @@ def get_json_from_url(
     }
 
     if use_random_wait:
-        wait_time = random.uniform(2.5, 8.0)
+        wait_time = random.uniform(0, 5)
         if not silent:
             print(f"[⏱️] Esperando {wait_time:.2f}s...")
         time.sleep(wait_time)

@@ -30,7 +30,7 @@ for name, script in scripts:
         except subprocess.CalledProcessError as e:
             print(f"[❌] Error en {name} (intento {attempt}/3): {e}")
             if attempt < 3:
-                wait = 300  # segundos de espera entre intentos
+                wait = 180  # segundos de espera entre intentos
                 print(f"⏳ Esperando {wait}s antes de reintentar...\n")
                 time.sleep(wait)
     
