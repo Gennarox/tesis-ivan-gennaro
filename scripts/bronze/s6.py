@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 import scrapping_functions
 from scrapping_functions import get_json_from_url, save_json, parse_json_to_model
 import html_utils
-from html_utils import esperar, obtener_max_page, extraer_productos, save_df_as_csv
+from html_utils import esperar, obtener_max_page_retail, extraer_productos_retail, save_df_as_csv
 
 # %% [markdown]
 # ##### Categorias
@@ -94,7 +94,7 @@ for _, row in df_categorias.iterrows():
     
     response = requests.get(categoria_url)
     tree = HTMLParser(response.text)
-    max_page = obtener_max_page(tree)
+    max_page = obtener_max_page_retail(tree)
     print(f"📄 Total de páginas: {max_page}")
 
     for page in range(1, max_page + 1):
@@ -111,7 +111,7 @@ for _, row in df_categorias.iterrows():
             "supermercado": SUPERMERCADO
         }
 
-        productos_pagina = extraer_productos(html_tree, contexto, selectors=selectors)
+        productos_pagina = extraer_productos_retail(html_tree, contexto, selectors=selectors)
         productos_final.extend(productos_pagina)
 
 
