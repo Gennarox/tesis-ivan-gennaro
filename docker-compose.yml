@@ -71,3 +71,13 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi
+    container_name: monitor
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/ingestions
+    command: >
+      sh -c "python scripts/monitor.py > /app/logs/monitor.loc 2>&1"
