@@ -15,6 +15,12 @@ FNAME_RE = re.compile(
     r"^(?P<supermercado>[a-zA-Z0-9\-]+)_(?P<dato>categoria|producto)_(?P<fecha>\d{4}-\d{2}-\d{2})_(?P<hora>\d{2}-\d{2}(?:-\d{2})?)\.(?P<ext>[a-zA-Z0-9]+)$"
 )
 
+print(f"[DEBUG] BASE_PATH = {BASE_PATH}")
+print(f"[DEBUG] Contenido de {BASE_PATH}:")
+for p in BASE_PATH.iterdir():
+    print(" -", p)
+
+"""
 def parse_filename(fname: str):
     m = FNAME_RE.match(fname)
     if not m:
@@ -57,4 +63,4 @@ if __name__ == "__main__":
         print("[WARN] DataFrame vacío: no se encontraron archivos con el patrón esperado.")
     df.to_csv(out_csv, index=False)
     print(f"[INFO] Monitor guardado en {out_csv}")
-
+"""

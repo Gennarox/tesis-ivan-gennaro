@@ -78,11 +78,12 @@ services:
       dockerfile: Dockerfile.pi
     container_name: monitor
     volumes:
-      - ~/docker-data/webscrapping-tesis:/app/ingestions
-      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+      - /home/ivanspi/docker-data/webscrapping-tesis:/app/ingestions
+      - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
     environment:
       - INGESTIONS_DIR=/app/ingestions
       - LOGS_DIR=/app/logs
     command: >
       sh -c "python -u scripts/monitor.py 2>&1 | tee /app/logs/monitor.log"
     restart: unless-stopped
+
