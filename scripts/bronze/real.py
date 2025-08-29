@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 
 # Funciones del proyecto
 import scrapping_functions
-from scrapping_functions import get_json_from_url, save_json, parse_json_to_model
+from scrapping_functions import get_json_from_url, save_json
 
 # %% [markdown]
 # ##### Categorías
