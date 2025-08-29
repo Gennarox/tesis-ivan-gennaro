@@ -79,5 +79,6 @@ services:
     container_name: monitor
     volumes:
       - ~/docker-data/webscrapping-tesis:/app/ingestions
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
     command: >
       sh -c "python scripts/monitor.py > /app/logs/monitor.log 2>&1"
