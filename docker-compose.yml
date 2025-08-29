@@ -80,5 +80,9 @@ services:
     volumes:
       - ~/docker-data/webscrapping-tesis:/app/ingestions
       - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    environment:
+      - INGESTIONS_DIR=/app/ingestions
+      - LOGS_DIR=/app/logs
     command: >
-      sh -c "python scripts/monitor.py > /app/logs/monitor.log 2>&1"
+      sh -c "python -u scripts/monitor.py 2>&1 | tee /app/logs/monitor.log"
+    restart: unless-stopped
