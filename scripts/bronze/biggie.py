@@ -11,10 +11,6 @@ from zoneinfo import ZoneInfo
 import scrapping_functions
 from scrapping_functions import get_json_from_url, save_json, parse_json_to_model
 
-# Modelos de datos (pydantic)
-import pydantic_model
-from pydantic_model import categories, products
-
 # %% [markdown]
 # ##### Categorías
 
@@ -32,21 +28,19 @@ save_json(
 
 # %%
 if json_response:
-    categories_model = parse_json_to_model(
-        json_data=json_response,
-        model_class=categories,
-        supermarket="biggie"
-    )
+    items = json_response.get("items", [])
+    df = pd.DataFrame(items)
+    df["ingestion_time"] = datetime.now(ZoneInfo("America/Asuncion"))
+    df["supermarket"] = "biggie"
 
 # %%
-df = pd.DataFrame([c.model_dump() for c in categories_model])
 df.head()
 
 # %% [markdown]
 # ##### Productos
 
 # %%
-categories = df["slug"].unique() # [16:-2] subset for testing
+categories = df["slug"].unique()
 np.random.shuffle(categories)
 print(f"Number of categories -> {categories.size}")
 categories
@@ -106,17 +100,5 @@ save_json(
     name="biggie_products",
     subfolder="biggie/products"
 )
-
-# %% [markdown]
-# if all_items :
-#     products_model = parse_json_to_model(
-#         json_data = all_items, 
-#         model_class = products, 
-#         supermarket = 'biggie'
-#     )
-
-# %% [markdown]
-# df = pd.DataFrame([c.model_dump() for c in products_model])
-# df.head()
 
 

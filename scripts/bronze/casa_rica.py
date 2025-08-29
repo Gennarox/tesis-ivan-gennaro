@@ -9,8 +9,6 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 # Funciones del proyecto
-import scrapping_functions
-from scrapping_functions import get_json_from_url, save_json, parse_json_to_model
 import html_utils
 from html_utils import esperar, obtener_max_page_casa_rica, extraer_productos_casa_rica, save_df_as_csv
 
@@ -24,16 +22,14 @@ tree = HTMLParser(html)
 
 # %%
 data = [] 
-# Iteramos por cada categoría principal
 for lvl1 in tree.css("a.dropdown-toggle"):
     lvl1_name = lvl1.text(strip=True)
     lvl1_url = lvl1.attributes.get("href", "")
 
-    # Buscar el <ul> hermano que contiene las subcategorías
     parent_li = lvl1.parent
     submenu = parent_li.css_first("ul.dropdown-menu")
 
-    if not submenu:  # por si alguna categoría no tiene subniveles
+    if not submenu: 
         data.append({
             "categoria_nivel_1": lvl1_name,
             "categoria_nivel_2": None,
@@ -42,7 +38,6 @@ for lvl1 in tree.css("a.dropdown-toggle"):
         })
         continue
 
-    # Iterar por las subcategorías
     for lvl2_li in submenu.css("li.menu-item"):
         lvl2_a = lvl2_li.css_first("a[href]")
         if not lvl2_a:
@@ -51,7 +46,6 @@ for lvl1 in tree.css("a.dropdown-toggle"):
         lvl2_name = lvl2_a.text(strip=True)
         lvl2_url = lvl2_a.attributes.get("href")
 
-        # Filtrar "Ver todos"
         if "Ver todos" in lvl2_name:
             continue
 
@@ -89,7 +83,6 @@ selectors = {
     "precio": "span.price span.amount"
 }
 
-# 🔁 Iterar sobre cada categoría del DataFrame
 for _, row in df_categorias.iterrows():
     categoria_url = row["url"]
     category_slug = row["category_slug"]
@@ -102,7 +95,6 @@ for _, row in df_categorias.iterrows():
     print(f"📄 Total de páginas: {max_page}")
 
     for page in range(1, max_page + 1):
-        # en Casa Rica las páginas se forman con ".2", ".3", etc.
         page_url = f'https://casarica.com.py/catalogo/{categoria_url}' if page == 1 else f"https://casarica.com.py/catalogo/{categoria_url}.{page}"
         print(f"➡️ Página {page}: {page_url}")
         esperar()
@@ -121,10 +113,9 @@ for _, row in df_categorias.iterrows():
 
 print(f"\n✅ Total de productos extraídos: {len(productos_final)}")
 
-
 # %%
 df = pd.DataFrame(productos_final)
-df.head(10)
+df.head()
 
 # %%
 save_df_as_csv(

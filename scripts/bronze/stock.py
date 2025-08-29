@@ -9,8 +9,6 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 # Funciones del proyecto
-import scrapping_functions
-from scrapping_functions import get_json_from_url, save_json, parse_json_to_model
 import html_utils
 from html_utils import esperar, obtener_max_page_retail, extraer_productos_retail, save_df_as_csv
 
@@ -25,21 +23,18 @@ tree = HTMLParser(html)
 # %%
 data = []
 
-# Buscar todos los nodos de nivel 1
 for lvl1_li in tree.css("li.level1"):
     lvl1_a = lvl1_li.css_first("a")
     if not lvl1_a:
         continue
     lvl1_name = lvl1_a.text(strip=True)
 
-    # Dentro de este <li>, buscar los hijos de nivel 2
     for lvl2_li in lvl1_li.css("ul > li.level2"):
         lvl2_a = lvl2_li.css_first("a")
         if not lvl2_a:
             continue
         lvl2_name = lvl2_a.text(strip=True)
 
-        # Dentro del lvl2, buscar los hijos de nivel 3 (con enlaces)
         for lvl3_li in lvl2_li.css("ul > li.level3"):
             lvl3_a = lvl3_li.css_first("a[href]")
             if not lvl3_a:
@@ -84,7 +79,6 @@ selectors = {
     "unidad_medida": "span.unidad-medida",
     }
 
-# 🔁 Iterar sobre cada categoría (nivel 3) con contexto
 for _, row in df_categorias.iterrows():
     categoria_url = row["url"]
     category_slug = row["category_slug"]
@@ -116,7 +110,7 @@ for _, row in df_categorias.iterrows():
 
 # %%
 df = pd.DataFrame(productos_final)
-df.head(10)
+df.head()
 
 # %%
 save_df_as_csv(

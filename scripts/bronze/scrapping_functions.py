@@ -5,10 +5,21 @@ import json
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from pydantic import ValidationError
 from typing import Union
 
-# Opciones de User-Agent impersonation
+"""
+=========================================================
+ Módulo: api_utils.py
+ Autor: Iván Gennaro
+ Descripción:
+     Este archivo contiene funciones utilitarias para 
+     interactuar con APIs ocultas utilizadas en el 
+     web scraping de los supermercados **Biggie**, 
+     **Real** y **Casa Rica**.
+=========================================================
+"""
+
+# Lista de User-Agents para rotación en las solicitudes
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
@@ -27,18 +38,22 @@ def get_json_from_url(
     silent: bool = False
 ):
     """
-    Realiza una solicitud HTTP (GET o POST) y devuelve el JSON parseado.
+    Realiza una solicitud HTTP (GET o POST) y devuelve la respuesta en formato JSON.
 
-    Parámetros:
+    Args:
         url (str): URL a solicitar.
-        method (str): 'GET' o 'POST'.
-        payload (dict | list): Datos para enviar si el método es POST.
-        use_random_wait (bool): Espera aleatoria antes de la solicitud.
-        fixed_user_agent (str): User-Agent fijo (opcional).
-        silent (bool): Si True, omite prints de log.
+        method (str, opcional): Método HTTP. Puede ser "GET" o "POST". 
+            Por defecto "GET".
+        payload (dict | list, opcional): Datos para enviar si el método es POST.
+        use_random_wait (bool, opcional): Si True, espera un tiempo aleatorio 
+            antes de la solicitud (para evitar bloqueos). 
+            Por defecto True.
+        fixed_user_agent (str, opcional): User-Agent fijo para la solicitud.
+        silent (bool, opcional): Si True, no muestra mensajes en consola.
+            Por defecto False.
 
-    Retorna:
-        dict o None
+    Returns:
+        dict | list | None: Respuesta en formato JSON, o None si ocurre un error.
     """
     method = method.upper()
     user_agent = fixed_user_agent or random.choice(USER_AGENTS)
@@ -72,20 +87,23 @@ def get_json_from_url(
         print(f"[❌] Error en la solicitud: {e}")
         return None
 
+
 def save_json(data, name: str, subfolder: str = ""):
     """
-    Guarda un archivo JSON en la carpeta outputs/subfolder/ con timestamp.
+    Guarda datos en un archivo JSON dentro de la carpeta 
+    `outputs/subfolder/`, con un nombre que incluye un timestamp.
 
     Args:
-        data (list or dict): Datos a guardar.
+        data (list | dict): Datos a guardar en el archivo JSON.
         name (str): Nombre base del archivo.
-        subfolder (str): Ruta dentro de 'outputs/', por ejemplo: "biggie/categories"
+        subfolder (str, opcional): Subcarpeta dentro de `outputs/`, 
+            por ejemplo: "biggie/categories".
     """
     base_path = Path(__file__).parent
     output_dir = base_path / "outputs" / subfolder
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Convertir datetime a string si existe
+    # Convertir ingestion_time a string si existe en los datos
     for item in data:
         if isinstance(item.get("ingestion_time"), datetime):
             item["ingestion_time"] = item["ingestion_time"].isoformat()
@@ -97,32 +115,3 @@ def save_json(data, name: str, subfolder: str = ""):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"[💾] Guardado en: {output_dir / filename}")
-
-def parse_json_to_model(json_data: Union[dict, list], model_class, supermarket: str) -> list:
-    """
-    Convierte una respuesta JSON en una lista de instancias validadas del modelo Pydantic.
-    """
-    if not json_data:
-        return []
-
-    items = json_data.get("items") if isinstance(json_data, dict) else json_data
-    if not isinstance(items, list):
-        raise ValueError("json_data debe ser una lista o un diccionario con clave 'items'")
-
-    ingestion_time = datetime.now(ZoneInfo("America/Asuncion"))
-
-    models = []
-    for item in items:
-        enriched = {
-            **item,
-            "ingestion_time": item.get("ingestion_time") or ingestion_time,
-            "supermarket": supermarket
-        }
-
-        try:
-            models.append(model_class(**enriched))
-        except ValidationError as e:
-            print("[❌] Error de validación para item:")
-            print(e.json(indent=2))
-
-    return models

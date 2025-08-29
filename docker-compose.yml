@@ -1,14 +1,73 @@
 version: "3.9"
 
 services:
-  webscrapping:
+# ----------------------- Scrapers / Bronze ingestion -----------------------
+  biggie:
     build:
       context: .
-      dockerfile: Dockerfile.pi   # Usa el Dockerfile de la Raspberry
-    container_name: tokito
+      dockerfile: Dockerfile.pi 
+    container_name: scraper_biggie
     volumes:
       - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
-    command: python scripts/bronze/orquestacion.py
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    command: >
+      sh -c "python scripts/bronze/biggie.py > /app/logs/biggie.log 2>&1"
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  real:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi
+    container_name: scraper_real
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    command: >
+      sh -c "python scripts/bronze/real.py > /app/logs/real.log 2>&1"
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  superseis:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi
+    container_name: scraper_superseis
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    command: >
+      sh -c "python scripts/bronze/s6.py > /app/logs/s6.log 2>&1"
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  stock:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi
+    container_name: scraper_stock
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    command: >
+      sh -c "python scripts/bronze/stock.py > /app/logs/stock.log 2>&1"
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+casa_rica:
+    build:
+      context: .
+      dockerfile: Dockerfile.pi
+    container_name: scraper_casa_rica
+    volumes:
+      - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+      - ~/docker-data/webscrapping-tesis/logs:/app/logs
+    command: >
+      sh -c "python scripts/bronze/casa_rica.py > /app/logs/casa_rica.log 2>&1"
     restart: unless-stopped
     tty: true
     stdin_open: true
