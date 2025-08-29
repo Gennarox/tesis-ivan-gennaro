@@ -58,7 +58,7 @@ services:
     tty: true
     stdin_open: true
 
-casa_rica:
+  casa_rica:
     build:
       context: .
       dockerfile: Dockerfile.pi
