@@ -80,4 +80,4 @@ services:
     volumes:
       - ~/docker-data/webscrapping-tesis:/app/ingestions
     command: >
-      sh -c "python scripts/monitor.py > /app/logs/monitor.loc 2>&1"
+      sh -c "python scripts/monitor.py > /app/logs/monitor.log 2>&1"
