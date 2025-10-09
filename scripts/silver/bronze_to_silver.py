@@ -66,34 +66,29 @@ def extract_date_from_filename(filename):
 def copy_dataframe_to_postgres(df, conn, table_name):
     """
     Inserta un DataFrame en Postgres usando COPY (rápido).
-    Funciona con cualquier esquema y es seguro contra comas en los textos.
+    Seguro contra comas y valores NULL.
+    El DataFrame ya debe tener las columnas correctas.
     """
-
-    # Obtener las columnas del DataFrame
-    cols_keep = df.columns.tolist()
-
-    # Convertir DataFrame a buffer en formato TSV (tab-separated)
+    
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep="\t", na_rep="\\N")
     buffer.seek(0)
 
-    # Separar esquema y tabla si se pasa 'schema.table'
+    cur = conn.cursor()
+
+    # copy_expert con esquema y tabla
     if "." in table_name:
         schema, table = table_name.split(".")
+        table_sql = sql.Identifier(schema, table)
     else:
-        schema, table = None, table_name
+        table_sql = sql.Identifier(table_name)
 
-    # Generar SQL seguro con esquema y tabla
-    copy_sql = sql.SQL("COPY {} ({}) FROM STDIN WITH (FORMAT CSV, DELIMITER E'\t', NULL '\\N')").format(
-        sql.Identifier(schema, table) if schema else sql.Identifier(table),
-        sql.SQL(', ').join(map(sql.Identifier, cols_keep))
-    )
-
-    # Ejecutar COPY
-    cur = conn.cursor()
+    copy_sql = sql.SQL("COPY {} FROM STDIN WITH (FORMAT CSV, DELIMITER E'\t', NULL '\\N')").format(table_sql)
+    
     cur.copy_expert(copy_sql, buffer)
     conn.commit()
     cur.close()
+
 
 # %% [markdown]
 # ### Funcion principal
