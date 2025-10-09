@@ -43,6 +43,12 @@ def create_schema_and_tables(conn):
             category_lvl1_name TEXT,
             category_lvl2_name TEXT,
             category_lvl3_name TEXT,
+            category_lvl1_id TEXT,
+            category_lvl2_id TEXT,
+            category_lvl3_id TEXT,
+            category_lvl1_slug TEXT,
+            category_lvl2_slug TEXT,
+            category_lvl3_slug TEXT,
             created_at TIMESTAMP DEFAULT NOW(),
             PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
         );
