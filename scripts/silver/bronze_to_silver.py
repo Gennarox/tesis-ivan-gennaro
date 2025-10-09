@@ -8,6 +8,10 @@ import os, json, glob
 import pandas as pd
 import psycopg2
 from psycopg2 import sql
+import re
+from io import StringIO
+
+
 
 # ---------- CONFIG dinámico (usa env vars dentro del contenedor) ----------
 BRONZE_ROOT = os.environ.get("BRONZE_PATH", "/app/scripts/bronze/outputs")
@@ -58,18 +62,22 @@ def find_category_files(sup_dir):
 
 def extract_date_from_filename(filename):
     """Extrae fecha del nombre del archivo (ej: casaRica_categorias_2025-08-01.csv)"""
-    import re
     match = re.search(r"(\d{4}-\d{2}-\d{2})", filename)
     return match.group(1) if match else None
 
 def copy_dataframe_to_postgres(df, conn, table_name):
-    """Inserta DataFrame en Postgres con COPY (rápido)"""
+    """Inserta DataFrame en Postgres con COPY (rápido), seguro contra comas en los textos"""
     from io import StringIO
+
+    cols_keep = df.columns.tolist()  # ya está filtrado en full_load_categories
+
     buffer = StringIO()
-    df.to_csv(buffer, index=False, header=False)
+    df.to_csv(buffer, index=False, header=False, sep="\t", na_rep="\\N")
     buffer.seek(0)
+
     cur = conn.cursor()
-    cur.copy_expert(sql.SQL(f"COPY {table_name} FROM STDIN WITH CSV"), buffer)
+    cur.copy_from(buffer, table_name, sep="\t", null="\\N", columns=cols_keep)
+    conn.commit()
     cur.close()
 
 # %% [markdown]
