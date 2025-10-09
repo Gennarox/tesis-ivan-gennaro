@@ -95,7 +95,7 @@ services:
       POSTGRES_PASSWORD: secure_password
       POSTGRES_DB: myapp
     ports:
-      - "5432:5432"
+      - "5432:5432" 
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     restart: unless-stopped
@@ -111,3 +111,20 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
+
+  silver:
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  container_name: silver_loader
+  command: > 
+    sh -c "python -u scripts/silver/bronze_to_silver.py 2>&1 | tee /app/logs/bronze_to_silver.log"
+  depends_on:
+    - postgres
+  environment:
+    - BRONZE_PATH=/app/scripts/bronze/outputs
+    - MAPPINGS_FILE=/app/scripts/silver/categories_mapping.json
+    - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
+  volumes:
+    - /home/ivanspi/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
+    - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs

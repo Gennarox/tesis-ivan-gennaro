@@ -51,8 +51,8 @@ json_response = get_json_from_url(
 # %%
 save_json(
     data=json_response[0]["data"]["getCategory"],
-    name="real_categories",
-    subfolder="real/categories"
+    name="real_categorias",
+    subfolder="real/categorias"
 )
 
 # %%
@@ -150,8 +150,8 @@ print(f"\n✅ Fin del scraping: {len(all_products)} productos recolectados en {t
 # %%
 save_json(
     data=all_products,
-    name="real_products",
-    subfolder="real/products"
+    name="real_productos",
+    subfolder="real/productos"
 )
 
 
