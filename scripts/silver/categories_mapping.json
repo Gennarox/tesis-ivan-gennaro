@@ -8,9 +8,30 @@
       "slug": "category_lvl1_slug"
     }
   },
+  "real": {
+    "type": "json",
+    "path": "real/categorias/",
+    "columns": {
+      "boost": "category_lvl1_id",
+      "name": "category_lvl1_name",
+      "slug": "category_lvl1_slug",
+      "subCategories[].name": "category_lvl2_name",
+      "subCategories[].slug": "category_lvl2_slug"
+    }
+  },
   "s6": {
     "type": "csv",
     "path": "s6/categorias/",
+    "columns": {
+      "categoria_nivel_1": "category_lvl1_name",
+      "categoria_nivel_2": "category_lvl2_name",
+      "categoria_nivel_3": "category_lvl3_name",
+      "category_slug": "category_lvl3_slug"
+    }
+  },
+  "stock": {
+    "type": "csv",
+    "path": "stock/categorias/",
     "columns": {
       "categoria_nivel_1": "category_lvl1_name",
       "categoria_nivel_2": "category_lvl2_name",
