@@ -11,8 +11,6 @@ from psycopg2 import sql
 import re
 from io import StringIO
 
-
-
 # ---------- CONFIG dinámico (usa env vars dentro del contenedor) ----------
 BRONZE_ROOT = os.environ.get("BRONZE_PATH", "/app/scripts/bronze/outputs")
 MAPPINGS_FILE = os.environ.get("MAPPINGS_FILE", "/app/scripts/silver/categories_mapping.json")
@@ -66,17 +64,34 @@ def extract_date_from_filename(filename):
     return match.group(1) if match else None
 
 def copy_dataframe_to_postgres(df, conn, table_name):
-    """Inserta DataFrame en Postgres con COPY (rápido), seguro contra comas en los textos"""
-    from io import StringIO
+    """
+    Inserta un DataFrame en Postgres usando COPY (rápido).
+    Funciona con cualquier esquema y es seguro contra comas en los textos.
+    """
 
-    cols_keep = df.columns.tolist()  # ya está filtrado en full_load_categories
+    # Obtener las columnas del DataFrame
+    cols_keep = df.columns.tolist()
 
+    # Convertir DataFrame a buffer en formato TSV (tab-separated)
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep="\t", na_rep="\\N")
     buffer.seek(0)
 
+    # Separar esquema y tabla si se pasa 'schema.table'
+    if "." in table_name:
+        schema, table = table_name.split(".")
+    else:
+        schema, table = None, table_name
+
+    # Generar SQL seguro con esquema y tabla
+    copy_sql = sql.SQL("COPY {} ({}) FROM STDIN WITH (FORMAT CSV, DELIMITER E'\t', NULL '\\N')").format(
+        sql.Identifier(schema, table) if schema else sql.Identifier(table),
+        sql.SQL(', ').join(map(sql.Identifier, cols_keep))
+    )
+
+    # Ejecutar COPY
     cur = conn.cursor()
-    cur.copy_from(buffer, table_name, sep="\t", null="\\N", columns=cols_keep)
+    cur.copy_expert(copy_sql, buffer)
     conn.commit()
     cur.close()
 
