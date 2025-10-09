@@ -40,17 +40,17 @@ def create_schema_and_tables(conn):
         CREATE TABLE IF NOT EXISTS silver.categories(
             snapshot_date DATE NOT NULL,
             supermarket TEXT NOT NULL,
-            category_lvl1_name TEXT,
-            category_lvl2_name TEXT,
-            category_lvl3_name TEXT,
-            category_lvl1_id TEXT,
-            category_lvl2_id TEXT,
-            category_lvl3_id TEXT,
-            category_lvl1_slug TEXT,
-            category_lvl2_slug TEXT,
-            category_lvl3_slug TEXT,
-            created_at TIMESTAMP DEFAULT NOW(),
-            PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
+            category_lvl1_name TEXT NULL,
+            category_lvl2_name TEXT NULL,
+            category_lvl3_name TEXT NULL,
+            category_lvl1_id TEXT NULL,
+            category_lvl2_id TEXT NULL,
+            category_lvl3_id TEXT NULL,
+            category_lvl1_slug TEXT NULL,
+            category_lvl2_slug TEXT NULL,
+            category_lvl3_slug TEXT NULL,
+            created_at TIMESTAMP DEFAULT NOW()--,
+            --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
         );
     """)
     conn.commit()
