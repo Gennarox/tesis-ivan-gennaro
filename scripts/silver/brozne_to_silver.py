@@ -64,7 +64,8 @@ def full_load_categories(conn):
     cur.execute("TRUNCATE TABLE silver.categories;")
     conn.commit()
 
-    supermarkets = list_supermarkets(BRONZE_ROOT)
+    # supermarkets = list_supermarkets(BRONZE_ROOT)
+    supermarkets = ['biggie']
     for sup in supermarkets:
         print(f"📦 Procesando supermercado: {sup}")
         sup_dir = os.path.join(BRONZE_ROOT, sup)
