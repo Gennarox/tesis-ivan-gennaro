@@ -66,7 +66,7 @@ df_categorias.head()
 # %%
 save_df_as_csv(
     dataframe = df_categorias,
-    name = 'casa_rica_categorias',
+    name = 'casaRica_categorias',
     subfolder = 'casa_rica/categorias'
 )
 
@@ -120,7 +120,7 @@ df.head()
 # %%
 save_df_as_csv(
     dataframe = df,
-    name = 'casa_rica_productos',
+    name = 'casaRica_productos',
     subfolder = 'casa_rica/productos'
 )
 
