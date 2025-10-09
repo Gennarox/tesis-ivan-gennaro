@@ -97,7 +97,7 @@ services:
     ports:
       - "5432:5432" 
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - /home/ivanspi/docker-data/webscrapping-tesis/pgdata:/var/lib/postgresql/data
     restart: unless-stopped
 
   pgadmin:
