@@ -65,7 +65,7 @@ def full_load_categories(conn):
     conn.commit()
 
     # supermarkets = list_supermarkets(BRONZE_ROOT)
-    supermarkets = ['biggie']
+    supermarkets = ['s6']
     for sup in supermarkets:
         print(f"📦 Procesando supermercado: {sup}")
         sup_dir = os.path.join(BRONZE_ROOT, sup)
