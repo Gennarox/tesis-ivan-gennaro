@@ -9,8 +9,8 @@ import psycopg2
 from psycopg2 import sql
 import re
 from io import StringIO
-import silver.silver_common_functions
-from silver.silver_common_functions import connect_to_postgres, create_products_table, list_supermarkets, find_category_files, extract_date_from_filename, copy_dataframe_to_postgres
+import silver_common_functions
+from silver_common_functions import connect_to_postgres, create_products_table, list_supermarkets, find_category_files, extract_date_from_filename, copy_dataframe_to_postgres
 
 # ---------- CONFIG dinámico (usa env vars dentro del contenedor) ----------
 BRONZE_ROOT = os.environ.get("BRONZE_PATH", "/app/scripts/bronze/outputs")
