@@ -117,14 +117,19 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: silver_loader
-    command: > 
-      sh -c "python -u scripts/silver/bronze_to_silver_categories.py 2>&1 | tee /app/logs/bronze_to_silver_categories.log"
+    command: >
+      sh -c "
+        echo '🚀 Iniciando ETL Silver...';
+        python -u scripts/silver/bronze_to_silver_categories.py 2>&1 | tee /app/logs/bronze_to_silver_categories.log &&
+        python -u scripts/silver/bronze_to_silver_products.py 2>&1 | tee /app/logs/bronze_to_silver_products.log
+      "
     depends_on:
       - postgres
     environment:
       - BRONZE_PATH=/app/scripts/bronze/outputs
-      - MAPPINGS_FILE=/app/scripts/silver/categories_mapping.json
       - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
+      - MAPPINGS_CATEGORIES_FILE=/app/scripts/silver/categories_mapping.json
+      - MAPPINGS_PRODUCTS_FILE=/app/scripts/silver/products_columns_mapping.json
     volumes:
       - /home/ivanspi/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
       - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
