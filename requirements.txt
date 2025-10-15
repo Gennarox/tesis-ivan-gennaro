@@ -1,7 +1,6 @@
 pandas
 numpy
 requests
-pydantic
 selectolax
 psycopg2-binary
 python-dotenv
