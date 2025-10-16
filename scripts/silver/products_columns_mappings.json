@@ -25,7 +25,7 @@
       "brand": "brand",
       "price": "price",
       "promotion": "is_on_promotion",
-      "promotion.price": "promotion_price",
+      "promotion.conditions[].price": "promotion_price",
       "category": "category_slug",
       "ingestion_time": "ingestion_time"
     }

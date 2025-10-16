@@ -128,8 +128,8 @@ services:
     environment:
       - BRONZE_PATH=/app/scripts/bronze/outputs
       - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
-      - MAPPINGS_CATEGORIES_FILE=/app/scripts/silver/categories_mapping.json
-      - MAPPINGS_PRODUCTS_FILE=/app/scripts/silver/products_columns_mapping.json
+      - MAPPINGS_CATEGORIES_FILE=/app/scripts/silver/categories_columns_mappings.json
+      - MAPPINGS_PRODUCTS_FILE=/app/scripts/silver/products_columns_mappings.json
     volumes:
       - /home/ivanspi/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
       - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
