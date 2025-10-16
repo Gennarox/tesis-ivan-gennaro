@@ -107,11 +107,10 @@ def create_products_table(conn):
             product_id TEXT NULL,
             product_name TEXT NULL,
             brand TEXT NULL,
-            price NUMERIC(12,2) NULL,
+            price TEXT NULL,
             unit_of_measure TEXT NULL,
             is_on_promotion BOOLEAN NULL,
-            discount_percent NUMERIC(5,2) NULL,
-            promotion_price NUMERIC(12,2) NULL,
+            promotion_price TEXT NULL,
             category_slug TEXT NULL,
             ingestion_time TIMESTAMP NULL,
             created_at TIMESTAMP DEFAULT NOW()
