@@ -5,12 +5,11 @@
     "columns": {
       "code": "product_id",
       "name": "product_name",
-      "brand": "brand",
+      "brand.name": "brand",
       "price": "price",
       "unitOfMeasure": "unit_of_measure",
       "isOnOffer": "is_on_promotion",
-      "discountPercent": "discount_percent",
-      "promotion_price": "promotion_price",
+      "priceSaleOffer": "promotion_price",
       "category": "category_slug",
       "ingestion_time": "ingestion_time"
     }
@@ -24,7 +23,6 @@
       "name": "product_name",
       "brand": "brand",
       "price": "price",
-      "promotion": "is_on_promotion",
       "promotion.conditions[].price": "promotion_price",
       "category": "category_slug",
       "ingestion_time": "ingestion_time"
@@ -33,7 +31,7 @@
 
   "superseis": {
     "type": "csv",
-    "path": "superseis/productos/",
+    "path": "s6/productos/",
     "columns": {
       "titulo": "product_name",
       "marca": "brand",
@@ -59,7 +57,7 @@
 
   "casarica": {
     "type": "csv",
-    "path": "casarica/productos/",
+    "path": "casa_rica/productos/",
     "columns": {
       "titulo": "product_name",
       "precio": "price",
