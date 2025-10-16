@@ -24,23 +24,24 @@ DB_DSN = os.environ.get("DB_DSN", "host=postgres_db port=5432 dbname=myapp user=
 # %%
 def full_load_categories(conn):
     """
-    Full load de categorías usando categories_columns_mappings.json
-    Compatible con todos los supermercados.
+    Carga completa de categorías desde la capa Bronze hacia Silver.
+    Lee archivos CSV/JSON de distintos supermercados, aplica el mapeo definido en 
+    categories_columns_mappings.json, y los inserta en PostgreSQL.
     """
-    # 1️⃣ Cargar mapping
+    # 1️⃣ Cargar mapeos
     with open(MAPPINGS_FILE, "r") as f:
         mappings = json.load(f)
 
     create_categories_table(conn)
-    cur = conn.cursor()
-    cur.execute("TRUNCATE TABLE silver.categories;")
+    with conn.cursor() as cur:
+        cur.execute("TRUNCATE TABLE silver.categories;")
     conn.commit()
 
     for sup, conf in mappings.items():
         sup_dir = os.path.join(BRONZE_ROOT, conf["path"])
         print(f"\n📦 Procesando supermercado: {sup} desde {sup_dir}")
 
-        # Buscar archivos CSV/JSON
+        # 2️⃣ Buscar archivos CSV o JSON
         files = glob.glob(os.path.join(sup_dir, "*.csv")) + glob.glob(os.path.join(sup_dir, "*.json"))
         if not files:
             print(f"⚠️ No se encontraron archivos para {sup}")
@@ -49,31 +50,42 @@ def full_load_categories(conn):
         for fpath in files:
             print(f"  ↳ Leyendo {fpath}")
 
-            # 2️⃣ Leer archivo según tipo
-            if conf["type"] == "csv":
-                df = pd.read_csv(fpath)
-            else:
-                df = pd.read_json(fpath)
+            # 3️⃣ Intentar leer el archivo de forma segura
+            try:
+                if os.path.getsize(fpath) == 0:
+                    print(f"    ⚠️ Archivo vacío, se omite: {os.path.basename(fpath)}")
+                    continue
 
-            # 3️⃣ Aplicar mapping básico (renombrar columnas que existen)
+                df = pd.read_csv(fpath) if conf["type"] == "csv" else pd.read_json(fpath)
+                if df.empty:
+                    print(f"    ⚠️ DataFrame vacío, se omite: {os.path.basename(fpath)}")
+                    continue
+
+            except Exception as e:
+                print(f"    ❌ Error leyendo {os.path.basename(fpath)}: {e}")
+                continue
+
+            # 4️⃣ Aplicar mapeo básico
             simple_cols = {k: v for k, v in conf["columns"].items() if "[]" not in k}
-            df = df.rename(columns=simple_cols)
+            df.rename(columns=simple_cols, inplace=True)
 
-            # 4️⃣ Procesar subcategorías JSON (si existen)
+            # 5️⃣ Expandir subcategorías (si existen)
             for k, v in conf["columns"].items():
                 if "[]" in k and k.split("[].")[0] in df.columns:
                     parent_col, sub_key = k.split("[].")
-                    df_expanded = pd.json_normalize(df[parent_col].apply(lambda x: x if isinstance(x, list) else []))
+                    df_expanded = pd.json_normalize(
+                        df[parent_col].apply(lambda x: x if isinstance(x, list) else [])
+                    )
                     if sub_key in df_expanded.columns:
-                        df_expanded = df_expanded.rename(columns={sub_key: v})
+                        df_expanded.rename(columns={sub_key: v}, inplace=True)
                         df = pd.concat([df.drop(columns=[parent_col]), df_expanded], axis=1)
 
-            # 5️⃣ Columnas comunes
+            # 6️⃣ Agregar metadatos comunes
             df["supermarket"] = sup
             df["snapshot_date"] = extract_date_from_filename(fpath)
             df["created_at"] = pd.Timestamp.now()
 
-            # 6️⃣ Asegurar columnas del esquema
+            # 7️⃣ Normalizar columnas según esquema
             cols_keep = [
                 "snapshot_date", "supermarket",
                 "category_lvl1_name", "category_lvl2_name", "category_lvl3_name",
@@ -81,16 +93,16 @@ def full_load_categories(conn):
                 "category_lvl1_slug", "category_lvl2_slug", "category_lvl3_slug",
                 "created_at"
             ]
-            for col in cols_keep:
-                if col not in df.columns:
-                    df[col] = None
-            df = df[cols_keep]
+            df = df.reindex(columns=cols_keep, fill_value=None)
 
-            # 7️⃣ Insertar en PostgreSQL
-            copy_dataframe_to_postgres(df, conn, "silver.categories")
-            conn.commit()
+            # 8️⃣ Insertar en PostgreSQL
+            try:
+                copy_dataframe_to_postgres(df, conn, "silver.categories")
+                conn.commit()
+            except Exception as e:
+                print(f"    ❌ Error insertando {os.path.basename(fpath)}: {e}")
+                conn.rollback()
 
-    cur.close()
     print("\n✅ Full load completado para todos los supermercados.")
 
 
