@@ -119,7 +119,7 @@ def full_load_products(conn):
                 "snapshot_date", "supermarket",
                 "product_id", "product_name", "brand",
                 "price", "unit_of_measure",
-                "is_on_promotion", "discount_percent", "promotion_price",
+                "is_on_promotion", "promotion_price",
                 "category_slug", "ingestion_time", "created_at"
             ]
             df = df.reindex(columns=cols_keep, fill_value=None)
