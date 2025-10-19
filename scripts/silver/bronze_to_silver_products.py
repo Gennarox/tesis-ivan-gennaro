@@ -58,7 +58,7 @@ def full_load_products(conn):
 
                 # Leer el archivo
                 if conf["type"] == "csv":
-                    df = pd.read_csv(fpath)
+                    df = pd.read_csv(fpath, sep=',')
                 else:
                     df = pd.read_json(fpath)
 
