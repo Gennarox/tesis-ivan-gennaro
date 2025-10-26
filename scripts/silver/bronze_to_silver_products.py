@@ -99,14 +99,16 @@ def full_load_products(conn):
             for list_col, new_col in list_cols.items():
                 parent_path, sub_key = list_col.split("[].")
                 parent_root = parent_path.split(".")[0]
+
                 if parent_root in df.columns:
-                    # Convertir cada fila en lista válida
-                    df_expanded = df[parent_root].apply(lambda x: x if isinstance(x, dict) else x)
-                    df_expanded = pd.json_normalize(df_expanded)
-                    # Buscar la columna expandida (p. ej. "promotion.conditions.price")
-                    target_col = f"{parent_path}.{sub_key}"
-                    if target_col in df_expanded.columns:
-                        df[new_col] = df_expanded[target_col]
+                    def extract_from_list(x):
+                        if isinstance(x, list) and len(x) > 0:
+                            # Si los elementos son dicts, intenta extraer el campo solicitado
+                            if isinstance(x[0], dict) and sub_key in x[0]:
+                                return x[0].get(sub_key)
+                        return None
+
+                    df[new_col] = df[parent_root].apply(extract_from_list)
                     df.drop(columns=[parent_root], inplace=True, errors="ignore")
 
             # 5️⃣ Agregar metadatos comunes
