@@ -11,5 +11,8 @@
     "ms-toolsai.jupyter"
   ],
   "postCreateCommand": "pip install -r /app/requirements.txt",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "remoteEnv": {
+    "DB_DSN": "host=192.168.100.54 port=5432 dbname=myapp user=admin password=secure_password"
+  }
 }

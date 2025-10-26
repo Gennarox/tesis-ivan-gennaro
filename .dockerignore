@@ -1,0 +1,4 @@
+.git
+pgdata
+docker-data
+*.log

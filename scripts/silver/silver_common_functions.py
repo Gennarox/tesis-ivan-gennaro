@@ -41,7 +41,7 @@ def connect_to_postgres():
         return None
 
     try:
-        conn = psycopg2.connect(DB_DSN)
+        conn = psycopg2.connect(DB_DSN, connect_timeout=30)
         print("✅ Conectado a PostgreSQL")
         return conn
     except Exception as e:
