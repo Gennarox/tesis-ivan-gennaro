@@ -97,19 +97,28 @@ def full_load_products(conn):
 
             # Expandir columnas con listas (ej: promotion.conditions[].price)
             for list_col, new_col in list_cols.items():
-                parent_path, sub_key = list_col.split("[].")
-                parent_root = parent_path.split(".")[0]
+                parent_path, sub_key = list_col.split("[].")  # 'promotion.conditions', 'price'
+                root_keys = parent_path.split(".")            # ['promotion', 'conditions']
+                root = root_keys[0]                           # 'promotion'
 
-                if parent_root in df.columns:
-                    def extract_from_list(x):
-                        if isinstance(x, list) and len(x) > 0:
-                            # Si los elementos son dicts, intenta extraer el campo solicitado
-                            if isinstance(x[0], dict) and sub_key in x[0]:
-                                return x[0].get(sub_key)
+                if root in df.columns:
+                    def extract_nested(x):
+                        if isinstance(x, dict):
+                            # Caso: {"conditions": [{...}, {...}]}
+                            inner = x.get(root_keys[1])
+                            if isinstance(inner, list) and len(inner) > 0:
+                                first_item = inner[0]
+                                if isinstance(first_item, dict):
+                                    return first_item.get(sub_key)
+                        elif isinstance(x, list) and len(x) > 0:
+                            # Caso menos común: lista directa
+                            first_item = x[0]
+                            if isinstance(first_item, dict):
+                                return first_item.get(sub_key)
                         return None
 
-                    df[new_col] = df[parent_root].apply(extract_from_list)
-                    df.drop(columns=[parent_root], inplace=True, errors="ignore")
+                    df[new_col] = df[root].apply(extract_nested)
+                    df.drop(columns=[root], inplace=True, errors="ignore")
 
             # 5️⃣ Agregar metadatos comunes
             df["supermarket"] = sup
@@ -158,5 +167,3 @@ if __name__ == "__main__":
     if conn:
         full_load_products(conn)
         conn.close()
-
-
