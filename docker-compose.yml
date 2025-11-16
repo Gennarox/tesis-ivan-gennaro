@@ -142,7 +142,7 @@ services:
     command: >
       sh -c "
         echo '🚀 Iniciando transformaciones de Silver...';
-        python -u scripts/silver/products_trasnformations.py 2>&1 | tee /app/logs/products_trasnformations.log
+        python -u scripts/silver/products_transformations.py 2>&1 | tee /app/logs/products_transformations.log
       "
     depends_on:
       - postgres
