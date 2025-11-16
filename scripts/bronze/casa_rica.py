@@ -21,15 +21,22 @@ html = response.text
 tree = HTMLParser(html)
 
 # %%
-data = [] 
-for lvl1 in tree.css("a.dropdown-toggle"):
-    lvl1_name = lvl1.text(strip=True)
-    lvl1_url = lvl1.attributes.get("href", "")
+data = []
 
-    parent_li = lvl1.parent
-    submenu = parent_li.css_first("ul.dropdown-menu")
+# Selecciona todos los items del menú principal
+for li in tree.css("li.menu-item.catalogo"):
 
-    if not submenu: 
+    a = li.css_first("a[href]")
+    if not a:
+        continue
+
+    lvl1_name = a.text(strip=True)
+    lvl1_url = a.attributes.get("href")
+
+    submenu = li.css_first("ul.dropdown-menu")
+
+    # Caso 1: Categoría SIN subcategorías (EJ: BAZAR)
+    if not submenu:
         data.append({
             "categoria_nivel_1": lvl1_name,
             "categoria_nivel_2": None,
@@ -38,16 +45,19 @@ for lvl1 in tree.css("a.dropdown-toggle"):
         })
         continue
 
+    # Caso 2: Categoría CON subcategorías
     for lvl2_li in submenu.css("li.menu-item"):
         lvl2_a = lvl2_li.css_first("a[href]")
         if not lvl2_a:
             continue
 
         lvl2_name = lvl2_a.text(strip=True)
-        lvl2_url = lvl2_a.attributes.get("href")
 
+        # Excluir "Ver todos"
         if "Ver todos" in lvl2_name:
             continue
+
+        lvl2_url = lvl2_a.attributes.get("href")
 
         data.append({
             "categoria_nivel_1": lvl1_name,
@@ -56,12 +66,10 @@ for lvl1 in tree.css("a.dropdown-toggle"):
             "category_slug": f"{lvl1_name}/{lvl2_name}".replace(" ", "_")
         })
 
+
 # %%
 df_categorias = pd.DataFrame(data)
 df_categorias.nunique()
-
-# %%
-df_categorias.head()
 
 # %%
 save_df_as_csv(

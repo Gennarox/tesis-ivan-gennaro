@@ -1,9 +1,24 @@
 {
   "Almacén": {
-    "biggie": ["almacen", "condimentos"],
-    "casa_rica": "almacen",
-    "real": "almacen",
-    "s6": "almacen",
+    "biggie": [
+      "almacen", "condimentos", "alimentos especiales", 
+      "chocolates y golosinas", "heladeria y confiteria",
+      "snacks"
+    ],
+    "casa_rica": [
+      "almacen", "snacks", "saludables",
+      "desayuno", "conservados", "condimentos salsas",
+      "chocolates y golosinas", "helados"
+    ],
+    "real": [
+      "almacen", "chocolates y golosinas",
+      "yerbas e infusiones", "snacks y aperitivos",
+      "desayuno y merienda", "condimentos y salsas",
+      "saludables"
+    ],
+    "s6": [
+      "almacen", "snacks y aperitivos"
+    ],
     "stock": "almacen"
   },
   "Congelados": {
@@ -14,15 +29,15 @@
     "stock": "congelados"
   },
   "Pastas Frescas": {
-    "biggie": "pastas frescas",
+    "biggie": null,
     "casa_rica": "pastas frescas",
     "real": "pastas frescas",
     "s6": "pastas frescas",
     "stock": "pastas frescas"
   },
   "Bazar": {
-    "biggie": "bazar",
-    "casa_rica": null,
+    "biggie": "varios",
+    "casa_rica": "bazar",
     "real": "bazar y hogar",
     "s6": "bazar",
     "stock": "bazar"
@@ -30,28 +45,29 @@
   "Bebes": {
     "biggie": "bebes",
     "casa_rica": "bebes",
-    "real": "bebes",
+    "real": "cuidado del bebe",
     "s6": "bebes",
     "stock": "bebes"
   },
-  "Bebidas con Alcohol": {
-    "biggie": "bebidas con alcohol",
-    "casa_rica": "bebidas con alcohol",
-    "real": "bebidas con alcohol",
-    "s6": "bebidas con alcohol",
-    "stock": "bebidas con alcohol"
-  },
-  "Bebidas sin Alcohol": {
-    "biggie": "bebidas sin alcohol",
-    "casa_rica": "bebidas sin alcohol",
-    "real": "bebidas sin alcohol",
-    "s6": "bebidas sin alcohol",
-    "stock": "bebidas sin alcohol"
+  "Bebidas": {
+    "biggie": [
+      "bebidas con alcohol", "bebidas sin alcohol"
+    ],
+    "casa_rica": [
+      "bebidas con alcohol", "bebidas sin alcohol"
+    ],
+    "real": "bebidas",
+    "s6": [
+      "bebidas con alcohol", "bebidas sin alcohol"
+    ],
+    "stock": [
+      "bebidas con alcohol", "bebidas sin alcohol"
+    ]
   },
   "Carnes": {
     "biggie": "carniceria",
     "casa_rica": "carniceria",
-    "real": "carnes",
+    "real": "carniceria y fiambreria",
     "s6": "carnes",
     "stock": "carnes"
   },
@@ -63,51 +79,52 @@
     "stock": "electrodomesticos"
   },
   "Farmacia": {
-    "biggie": "farmacia",
-    "casa_rica": "farmacia",
-    "real": "farmacia",
-    "s6": "farmacia",
-    "stock": "farmacia"
+    "biggie": [
+      "farmacia", "higiene personal"
+    ],
+    "casa_rica": "cuidado personal",
+    "real": "cuidado personal",
+    "s6": [
+      "farmacia", "perfumeria"
+    ],
+    "stock": [
+      "farmacia", "perfumeria"
+    ]
   },
   "Fiambres y Quesos": {
     "biggie": "fiambreria",
-    "casa_rica": "fiambreria",
+    "casa_rica": [
+      "fiambreria","queseria"
+  ],
     "real": "fiambres y quesos",
     "s6": "fiambres y quesos",
     "stock": "fiambres y quesos"
   },
   "Frutas y Verduras": {
     "biggie": "fruteria y verduleria",
-    "casa_rica": "verduleriafruteria",
+    "casa_rica": "verduleria fruteria",
     "real": "frutas y verduras",
-    "s6": "frutas verdurashuevos",
-    "stock": "frutas y verduras"
-  },
-  "Juguetería": {
-    "biggie": null,
-    "casa_rica": null,
-    "real": "jugueteria",
-    "s6": "jugueteria",
-    "stock": "jugueteria"
+    "s6": "frutas verduras huevos",
+    "stock": "frutas verduras huevos"
   },
   "Librería": {
     "biggie": "libreria",
-    "casa_rica": "libreria",
-    "real": "libreria",
+    "casa_rica": null,
+    "real": null,
     "s6": "libreria",
     "stock": "libreria"
   },
   "Limpieza": {
     "biggie": "limpieza",
-    "casa_rica": "limpieza",
-    "real": "limpieza",
+    "casa_rica": "cuidado del hogar",
+    "real": "Cuidado del Hogar",
     "s6": "limpieza",
     "stock": "limpieza"
   },
   "Lácteos": {
     "biggie": "lacteos",
     "casa_rica": "lacteos",
-    "real": "lacteos",
+    "real": "lacteos y quesos",
     "s6": "lacteos",
     "stock": "lacteos"
   },
@@ -115,21 +132,30 @@
     "biggie": "mascotas",
     "casa_rica": "mascotas",
     "real": "mascotas",
-    "s6": "mascotas",
-    "stock": "mascotas"
+    "s6": "mascotas y hogar",
+    "stock": "mascotas y hogar"
   },
   "Panadería": {
     "biggie": "panaderia",
-    "casa_rica": "panaderia",
-    "real": "panaderia",
+    "casa_rica": [
+      "confiteria", "panaderia"
+    ],
+    "real": "panaderia y confiteria",
     "s6": "panaderia",
     "stock": "panaderia"
   },
-  "Perfumería": {
-    "biggie": "perfumeria",
-    "casa_rica": null,
-    "real": "perfumeria",
-    "s6": "perfumeria",
-    "stock": "perfumeria"
+  "Otros": {
+    "biggie": [
+      "None", "asado"
+    ],
+    "casa_rica": [
+      "promociones y ofertas", "rotiseria"
+    ],
+    "real": [
+      "desactivados", "navideños", "carbones y encendedores",
+      "informatica y electronica", "rostiseria"
+    ],
+    "s6": "jugueteria",
+    "stock": "jugueteria"
   }
 }

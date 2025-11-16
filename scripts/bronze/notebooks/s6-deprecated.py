@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 
 # Funciones del proyecto
 import html_utils
-from html_utils import esperar, obtener_max_page_s6_new, save_df_as_csv, extraer_productos_s6_new
+from html_utils import esperar, obtener_max_page_retail, extraer_productos_retail, save_df_as_csv
 
 # %% [markdown]
 # ##### Categorias
@@ -23,23 +23,22 @@ tree = HTMLParser(html)
 # %%
 data = []
 
-# 🔹 Buscar todas las categorías principales
-for lvl1_li in tree.css("li.nav-item.dropdown-categories"):
-    lvl1_a = lvl1_li.css_first("a.header-menu, a.dropdown-toggle-categories")
+for lvl1_li in tree.css("li.level1"):
+    lvl1_a = lvl1_li.css_first("a")
     if not lvl1_a:
         continue
     lvl1_name = lvl1_a.text(strip=True)
 
-    # 🔹 Dentro de cada categoría principal, buscar subcategorías (nivel 2)
-    for lvl2_li in lvl1_li.css("li.dropdown-submenu"):
-        lvl2_a = lvl2_li.css_first("a.submenu-title[href]")
+    for lvl2_li in lvl1_li.css("ul > li.level2"):
+        lvl2_a = lvl2_li.css_first("a")
         if not lvl2_a:
             continue
         lvl2_name = lvl2_a.text(strip=True)
-        lvl2_url = lvl2_a.attributes.get("href")
 
-        # 🔹 Dentro de cada subcategoría, buscar sub-subcategorías (nivel 3)
-        for lvl3_a in lvl2_li.css("ul.grand-child a[href]"):
+        for lvl3_li in lvl2_li.css("ul > li.level3"):
+            lvl3_a = lvl3_li.css_first("a[href]")
+            if not lvl3_a:
+                continue
             lvl3_name = lvl3_a.text(strip=True)
             lvl3_url = lvl3_a.attributes.get("href")
 
@@ -53,7 +52,7 @@ for lvl1_li in tree.css("li.nav-item.dropdown-categories"):
 
 # %%
 df_categorias = pd.DataFrame(data)
-print(f"✅ Total de categorías encontradas: {len(df_categorias)}")
+df_categorias.nunique()
 
 # %%
 df_categorias.head()
@@ -73,11 +72,11 @@ INGESTION_TIME = datetime.now(ZoneInfo("America/Asuncion"))
 SUPERMERCADO = "Super Seis"
 productos_final = []
 selectors = {
-    "producto": "div.content",
-    "titulo": "div.description h4 a[data-product-name]",
-    "precio": "div.price span.price-new",
-    "unidad_medida": "span.sale-type-badge",
-    "marca": "",  # No disponible actualmente
+    "producto": "div.producto",
+    "titulo": "h2.product-title",
+    "marca": "div.product-brand",
+    "precio": "span.price-label",
+    "unidad_medida": "span.unidad-medida",
     }
 
 for _, row in df_categorias.iterrows():
@@ -89,7 +88,7 @@ for _, row in df_categorias.iterrows():
     
     response = requests.get(categoria_url)
     tree = HTMLParser(response.text)
-    max_page = obtener_max_page_s6_new(tree)
+    max_page = obtener_max_page_retail(tree)
     print(f"📄 Total de páginas: {max_page}")
 
     for page in range(1, max_page + 1):
@@ -106,7 +105,7 @@ for _, row in df_categorias.iterrows():
             "supermercado": SUPERMERCADO
         }
 
-        productos_pagina = extraer_productos_s6_new(html_tree, contexto, selectors=selectors)
+        productos_pagina = extraer_productos_retail(html_tree, contexto, selectors=selectors)
         productos_final.extend(productos_pagina)
 
 
