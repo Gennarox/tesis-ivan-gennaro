@@ -36,18 +36,9 @@ def connect_to_postgres():
         return None
 
 # =============================================================================
-# 💾 LECTURA DE TABLAS DE SQL CON PANDAS
+# 💾 LECTURA DE TABLAS DE SQL CON PANDAS                                                        A DEPRECAR
 # =============================================================================
 
 def read_table(query, conn):
     """Lee una tabla o query y devuelve un DataFrame"""
     return pd.read_sql(query, conn)
-
-
-if __name__ == "__main__":
-    conn = connect_to_postgres()
-    if conn:
-        df = read_table("SELECT * FROM silver.categories LIMIT 7", conn)
-        print(df.head())
-        conn.close()
-        

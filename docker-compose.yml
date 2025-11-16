@@ -133,3 +133,20 @@ services:
     volumes:
       - /home/ivanspi/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
       - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
+
+  silver_staging:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: silver_transformations
+    command: >
+      sh -c "
+        echo '🚀 Iniciando transformaciones de Silver...';
+        python -u scripts/silver/products_trasnformations.py 2>&1 | tee /app/logs/products_trasnformations.log &&
+      "
+    depends_on:
+      - postgres
+    environment:
+      - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
+    volumes:
+      - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs

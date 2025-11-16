@@ -1,2 +1,43 @@
-scripts/bronze/outputs
+# Datos de bronze/outputs y DB local
+/scripts/bronze/outputs/
 pgdata/
+docker-data/
+*.log
+
+# Python artifacts
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtualenvs / envs locales
+.venv/
+venv/
+env/
+.env/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.nbconvert.ipynb
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+
+# Build artefacts
+dist/
+build/
+*.egg-info/
+
+# Otros archivos grandes/temporales
+*.sqlite3
+*.db
+*.bak
+tmp/
