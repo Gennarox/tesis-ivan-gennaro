@@ -1,0 +1,88 @@
+category_lvl1_name,biggie,casa_rica,real,s6,stock
+ALMACEN,0,1,0,0,0
+Alimentos Especiales                    ,1,0,0,0,0
+Almacén,0,0,1,1,1
+Almacén                                ,1,0,0,0,0
+Asado                                   ,1,0,0,0,0
+BEBES,0,1,0,0,0
+BEBIDAS CON ALCOHOL,0,1,0,0,0
+BEBIDAS SIN ALCOHOL,0,1,0,0,0
+Bazar,0,0,0,1,1
+Bazar y Hogar,0,0,1,0,0
+Bebes,0,0,0,1,1
+Bebes                                   ,1,0,0,0,0
+Bebidas,0,0,1,0,0
+Bebidas con Alcohol,0,0,0,1,1
+Bebidas con Alcohol                     ,1,0,0,0,0
+Bebidas sin Alcohol,0,0,0,1,1
+Bebidas sin Alcohol                     ,1,0,0,0,0
+CARNICERIA,0,1,0,0,0
+CHOCOLATES Y GOLOSINAS,0,1,0,0,0
+CONDIMENTOS-SALSAS,0,1,0,0,0
+CONFITERIA,0,1,0,0,0
+CONGELADOS,0,1,0,0,0
+CONSERVADOS,0,1,0,0,0
+CUIDADO DEL HOGAR,0,1,0,0,0
+CUIDADO PERSONAL,0,1,0,0,0
+Carbones y Encendedores,0,0,1,0,0
+Carnes,0,0,0,1,1
+Carniceria                              ,1,0,0,0,0
+Carniceria y Fiambreria,0,0,1,0,0
+Chocolates y Golosinas,0,0,1,0,0
+Chocolates y Golosinas                  ,1,0,0,0,0
+Condimentos                             ,1,0,0,0,0
+Condimentos y Salsas,0,0,1,0,0
+Congelados,0,0,1,1,1
+Congelados                              ,1,0,0,0,0
+Cuidado Personal,0,0,1,0,0
+Cuidado del Bebé,0,0,1,0,0
+Cuidado del Hogar,0,0,1,0,0
+DESAYUNO,0,1,0,0,0
+Desactivados,0,0,1,0,0
+Desayuno y Merienda,0,0,1,0,0
+Electrodomésticos,0,0,0,1,1
+FARMACIA                                ,1,0,0,0,0
+FIAMBRERIA,0,1,0,0,0
+Farmacia,0,0,0,1,1
+Fiambreria                              ,1,0,0,0,0
+Fiambres y Quesos,0,0,0,1,1
+Frutas y Verduras,0,0,1,0,0
+Frutas/ Verduras/Huevos,0,0,0,1,1
+Frutería y Verdulería                 ,1,0,0,0,0
+HELADOS,0,1,0,0,0
+Heladeria y Confiteria                  ,1,0,0,0,0
+Higiene Personal                        ,1,0,0,0,0
+Informática y Electrónica,0,0,1,0,0
+Juguetería,0,0,0,1,1
+LACTEOS,0,1,0,0,0
+Libreria                                ,1,0,0,0,0
+Librería,0,0,0,1,1
+Limpieza,0,0,0,1,1
+Limpieza                                ,1,0,0,0,0
+Lácteos,0,0,0,1,1
+Lácteos                                ,1,0,0,0,0
+Lácteos y Quesos,0,0,1,0,0
+MASCOTAS,0,1,0,0,0
+Mascotas,0,0,1,0,0
+Mascotas                                ,1,0,0,0,0
+Mascotas y Hogar,0,0,0,1,1
+Navideños,0,0,1,0,0
+PANADERIA,0,1,0,0,0
+PASTAS FRESCAS,0,1,0,0,0
+PROMOCIONES Y OFERTAS,0,1,0,0,0
+Panaderia,0,0,0,1,1
+Panaderia                               ,1,0,0,0,0
+Panaderia y Confiteria,0,0,1,0,0
+Pastas Frescas,0,0,1,1,1
+Perfumeria,0,0,0,1,1
+QUESERIA,0,1,0,0,0
+ROTISERÍA,0,1,0,0,0
+Rostiseria,0,0,1,0,0
+SALUDABLES,0,1,0,0,0
+SNACKS,0,1,0,0,0
+Saludables,0,0,1,0,0
+Snacks                                  ,1,0,0,0,0
+Snacks y Aperitivos,0,0,1,0,0
+VERDULERIA-FRUTERIA,0,1,0,0,0
+Varios                                  ,1,0,0,0,0
+Yerbas e infusiones,0,0,1,0,0

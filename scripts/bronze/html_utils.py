@@ -65,6 +65,22 @@ def obtener_max_page_retail(tree):
 
     return max(nums) if nums else 1
 
+def obtener_max_page_s6_new(tree):
+    """
+    Detecta el número máximo de páginas en la paginación del nuevo sitio de Super Seis.
+    """
+    paginador = tree.css("ul.pagination li a, ul.pagination li span")
+    if not paginador:
+        return 1
+
+    nums = []
+    for node in paginador:
+        txt = node.text(strip=True)
+        if txt.isdigit():
+            nums.append(int(txt))
+
+    return max(nums) if nums else 1
+
 
 def obtener_max_page_casa_rica(tree):
     """
@@ -177,6 +193,37 @@ def extraer_productos_casa_rica(tree, contexto, selectors):
             "ingestion_time": contexto["ingestion_time"]
         })
     return productos
+
+def extraer_productos_s6_new(tree, contexto, selectors=None):
+    """
+    Extrae productos del nuevo sitio de Super Seis.
+    """
+    productos = []
+
+    # Buscar todos los productos en el grid
+    for prod in tree.css("div.content"):
+        try:
+            titulo_node = prod.css_first("div.description h4 a[data-product-name]")
+            precio_node = prod.css_first("div.price span.price-new")
+            unidad_node = prod.css_first("span.sale-type-badge")
+
+            titulo = titulo_node.text(strip=True) if titulo_node else None
+            precio = precio_node.text(strip=True) if precio_node else None
+            unidad = unidad_node.text(strip=True) if unidad_node else None
+
+            productos.append({
+                "titulo": titulo,
+                "precio": precio,
+                "unidad_medida": unidad,
+                "marca": "",
+                **contexto
+            })
+        except Exception as e:
+            print(f"⚠️ Error al parsear producto: {e}")
+            continue
+
+    return productos
+
 
 
 def save_df_as_csv(dataframe: pd.DataFrame, name: str, subfolder: str = ""):

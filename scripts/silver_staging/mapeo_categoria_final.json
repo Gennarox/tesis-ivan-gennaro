@@ -1,0 +1,135 @@
+{
+  "Almacén": {
+    "biggie": ["almacen", "condimentos"],
+    "casa_rica": "almacen",
+    "real": "almacen",
+    "s6": "almacen",
+    "stock": "almacen"
+  },
+  "Congelados": {
+    "biggie": "congelados",
+    "casa_rica": "congelados",
+    "real": "congelados",
+    "s6": "congelados",
+    "stock": "congelados"
+  },
+  "Pastas Frescas": {
+    "biggie": "pastas frescas",
+    "casa_rica": "pastas frescas",
+    "real": "pastas frescas",
+    "s6": "pastas frescas",
+    "stock": "pastas frescas"
+  },
+  "Bazar": {
+    "biggie": "bazar",
+    "casa_rica": null,
+    "real": "bazar y hogar",
+    "s6": "bazar",
+    "stock": "bazar"
+  },
+  "Bebes": {
+    "biggie": "bebes",
+    "casa_rica": "bebes",
+    "real": "bebes",
+    "s6": "bebes",
+    "stock": "bebes"
+  },
+  "Bebidas con Alcohol": {
+    "biggie": "bebidas con alcohol",
+    "casa_rica": "bebidas con alcohol",
+    "real": "bebidas con alcohol",
+    "s6": "bebidas con alcohol",
+    "stock": "bebidas con alcohol"
+  },
+  "Bebidas sin Alcohol": {
+    "biggie": "bebidas sin alcohol",
+    "casa_rica": "bebidas sin alcohol",
+    "real": "bebidas sin alcohol",
+    "s6": "bebidas sin alcohol",
+    "stock": "bebidas sin alcohol"
+  },
+  "Carnes": {
+    "biggie": "carniceria",
+    "casa_rica": "carniceria",
+    "real": "carnes",
+    "s6": "carnes",
+    "stock": "carnes"
+  },
+  "Electrodomésticos": {
+    "biggie": null,
+    "casa_rica": null,
+    "real": "electrodomesticos",
+    "s6": "electrodomesticos",
+    "stock": "electrodomesticos"
+  },
+  "Farmacia": {
+    "biggie": "farmacia",
+    "casa_rica": "farmacia",
+    "real": "farmacia",
+    "s6": "farmacia",
+    "stock": "farmacia"
+  },
+  "Fiambres y Quesos": {
+    "biggie": "fiambreria",
+    "casa_rica": "fiambreria",
+    "real": "fiambres y quesos",
+    "s6": "fiambres y quesos",
+    "stock": "fiambres y quesos"
+  },
+  "Frutas y Verduras": {
+    "biggie": "fruteria y verduleria",
+    "casa_rica": "verduleriafruteria",
+    "real": "frutas y verduras",
+    "s6": "frutas verdurashuevos",
+    "stock": "frutas y verduras"
+  },
+  "Juguetería": {
+    "biggie": null,
+    "casa_rica": null,
+    "real": "jugueteria",
+    "s6": "jugueteria",
+    "stock": "jugueteria"
+  },
+  "Librería": {
+    "biggie": "libreria",
+    "casa_rica": "libreria",
+    "real": "libreria",
+    "s6": "libreria",
+    "stock": "libreria"
+  },
+  "Limpieza": {
+    "biggie": "limpieza",
+    "casa_rica": "limpieza",
+    "real": "limpieza",
+    "s6": "limpieza",
+    "stock": "limpieza"
+  },
+  "Lácteos": {
+    "biggie": "lacteos",
+    "casa_rica": "lacteos",
+    "real": "lacteos",
+    "s6": "lacteos",
+    "stock": "lacteos"
+  },
+  "Mascotas": {
+    "biggie": "mascotas",
+    "casa_rica": "mascotas",
+    "real": "mascotas",
+    "s6": "mascotas",
+    "stock": "mascotas"
+  },
+  "Panadería": {
+    "biggie": "panaderia",
+    "casa_rica": "panaderia",
+    "real": "panaderia",
+    "s6": "panaderia",
+    "stock": "panaderia"
+  },
+  "Perfumería": {
+    "biggie": "perfumeria",
+    "casa_rica": null,
+    "real": "perfumeria",
+    "s6": "perfumeria",
+    "stock": "perfumeria"
+  }
+}
