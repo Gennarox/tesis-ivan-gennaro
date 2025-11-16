@@ -6,14 +6,14 @@ import numpy as np
 import psycopg2
 from psycopg2 import sql
 from io import StringIO
-from silver_staging_utils import connect_to_postgres
+from silver_staging_utils import connect_to_postgres, create_products_table
 
 
 # ============================================================
 # CONFIG
 # ============================================================
 
-CHUNKSIZE = 300_000
+CHUNKSIZE = 10000
 SOURCE_QUERY = """
     SELECT *
     FROM silver.products
@@ -79,7 +79,6 @@ def insert_chunk_copy(conn, df: pd.DataFrame):
         )
     conn.commit()
 
-
 # ============================================================
 # PROCESO PRINCIPAL
 # ============================================================
@@ -90,6 +89,15 @@ def main():
     if not conn:
         print("❌ No se pudo conectar a PostgreSQL")
         return
+
+    # Crear tabla si no existe y limpiar la tabla destino=
+    create_products_table(conn)
+    
+    with conn.cursor() as cur:
+        cur.execute("TRUNCATE TABLE silver_staging.products;")
+    conn.commit()
+
+    print("▶ Table en SQL preparada correctamente")
 
     total_rows = 0
     chunk_num = 0

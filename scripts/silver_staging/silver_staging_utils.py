@@ -42,3 +42,41 @@ def connect_to_postgres():
 def read_table(query, conn):
     """Lee una tabla o query y devuelve un DataFrame"""
     return pd.read_sql(query, conn)
+
+# =============================================================================
+# 🧱 CREACIÓN DE ESQUEMA Y TABLAS                                                               repetido de silver, a unificar
+# =============================================================================
+
+def create_products_table(conn):
+    """
+    Crea la tabla `silver_staging.products` si no existe.
+
+    Esta tabla almacena los productos procesados desde Silver, ya con estructura
+    unificada. Si la tabla ya existe, no realiza cambios destructivos.
+
+    Args:
+        conn (psycopg2.connection): Conexión activa a PostgreSQL.
+    """
+    cur = conn.cursor()
+
+    cur.execute("CREATE SCHEMA IF NOT EXISTS silver_staging;")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS silver_staging.products (
+            snapshot_date DATE NOT NULL,
+            supermarket TEXT NOT NULL,
+            product_id TEXT NULL,
+            product_name TEXT NULL,
+            brand TEXT NULL,
+            price TEXT NULL,
+            unit_of_measure TEXT NULL,
+            is_on_promotion BOOLEAN NULL,
+            promotion_price TEXT NULL,
+            category_slug TEXT NULL,
+            ingestion_time TIMESTAMP NULL,
+            created_at TIMESTAMP DEFAULT NOW(),
+            final_price TEXT NULL
+        );
+    """)
+
+    conn.commit()
+    cur.close()
