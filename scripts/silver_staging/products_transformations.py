@@ -13,11 +13,10 @@ from silver_staging_utils import connect_to_postgres, create_products_table
 # CONFIG
 # ============================================================
 
-CHUNKSIZE = 10000
+CHUNKSIZE = 100000
 SOURCE_QUERY = """
     SELECT *
     FROM silver.products
-    ORDER BY snapshot_date
 """
 TARGET_TABLE = "products"
 TARGET_SCHEMA = "silver_staging"

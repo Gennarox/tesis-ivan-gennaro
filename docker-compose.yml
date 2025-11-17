@@ -142,6 +142,7 @@ services:
     command: >
       sh -c "
         echo '🚀 Iniciando transformaciones de Silver...';
+        python -u scripts/silver_staging/categories_transformations.py 2>&1 | tee /app/logs/categories_transformations.log &&
         python -u scripts/silver_staging/products_transformations.py 2>&1 | tee /app/logs/products_transformations.log
       "
     depends_on:

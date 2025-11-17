@@ -80,3 +80,38 @@ def create_products_table(conn):
 
     conn.commit()
     cur.close()
+
+def create_categories_table(conn):
+    """
+    Crea el esquema `silver_staging` y la tabla `silver_staging.categories` si no existen.
+
+    Esta tabla se usa para almacenar las categorías procesadas desde Bronze.
+    En caso de que ya existan, la función no realiza ningún cambio destructivo.
+
+    Args:
+        conn (psycopg2.connection): Conexión activa a PostgreSQL.
+    """
+    cur = conn.cursor()
+
+    cur.execute("CREATE SCHEMA IF NOT EXISTS silver_staging;")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS silver_staging.categories (
+            snapshot_date DATE NOT NULL,
+            supermarket TEXT NOT NULL,
+            category_lvl1_name TEXT NULL,
+            category_lvl2_name TEXT NULL,
+            category_lvl3_name TEXT NULL,
+            category_lvl1_id TEXT NULL,
+            category_lvl2_id TEXT NULL,
+            category_lvl3_id TEXT NULL,
+            category_lvl1_slug TEXT NULL,
+            category_lvl2_slug TEXT NULL,
+            category_lvl3_slug TEXT NULL,
+            created_at TIMESTAMP DEFAULT NOW(),
+            category_slug_final TEXT NOT NULL,
+            category_clean TEXT NOT NULL,
+            category_final TEXT NOT NULL
+            
+            --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
+        );
+    """)
