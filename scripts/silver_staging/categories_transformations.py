@@ -24,8 +24,7 @@ SOURCE_QUERY = """
 TARGET_TABLE = "categories"
 TARGET_SCHEMA = "silver_staging"
 
-MAPPINGS_FILE = "/workspaces/tesis-ivan-gennaro/scripts/silver_staging/mapeo_categoria_final.json"
-
+MAPPINGS_FILE = '/workspaces/tesis-ivan-gennaro/scripts/silver_staging/final_category_mappings.json'
 
 # ============================================================
 # HELPERS Y NORMALIZADORES
