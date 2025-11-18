@@ -155,7 +155,9 @@
       "desactivados", "navideños", "carbones y encendedores",
       "informatica y electronica", "rostiseria"
     ],
-    "s6": "jugueteria",
+    "s6": [
+      "jugueteria", "ferreteria"
+    ],
     "stock": "jugueteria"
   }
 }

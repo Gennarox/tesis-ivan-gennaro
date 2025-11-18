@@ -140,6 +140,17 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 
     return chunk
 
+# ============================================================
+# Elimina columnas auxiliares
+# ============================================================
+
+AUX_COLS = ["real_lvl1_clean", "category_clean"]
+
+def drop_auxiliary_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Elimina columnas auxiliares antes de insertar en SQL"""
+    cols_to_drop = [c for c in AUX_COLS if c in df.columns]
+    return df.drop(columns=cols_to_drop, inplace=False)
+
 
 # ============================================================
 # INSERCIÓN COPY A POSTGRES
@@ -199,7 +210,10 @@ def main():
         # 1) Transformaciones
         chunk = transform_chunk(chunk)
 
-        # 2) Insertar
+        # 2) Elimina columnas auxiliares
+        chunk = drop_auxiliary_columns(chunk)
+
+        # 3) Insertar
         insert_chunk_copy(conn, chunk)
 
         total_rows += len(chunk)
