@@ -115,7 +115,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # --------------------------------------------
     # 3) MAPEAR category_final
     # --------------------------------------------
-    missing = []
+    missing = set()
 
     def map_final(row):
         sup = row["supermarket"]
@@ -124,7 +124,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
         result = INV_MAPS.get(sup, {}).get(clean)
 
         if result is None:
-            missing.append((sup, row["category_lvl1_name"], clean))
+            missing.add((sup, row["category_lvl1_name"], clean))
 
         return result
 
@@ -133,10 +133,11 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # Guardamos temporalmente las faltantes (luego lo haremos a un archivo log)
     if len(missing) > 0:
         print("⚠ Categorías no mapeadas encontradas en este chunk:")
-        for sup, orig, clean in missing[:15]:
+        missing_list = sorted(missing)
+        for sup, orig, clean in missing_list[:15]:
             print(f"  - {sup}: '{orig}' → '{clean}'")
-        if len(missing) > 15:
-            print(f"  ... y {len(missing) - 15} más.")
+        if len(missing_list) > 15:
+            print(f"  ... y {len(missing_list) - 15} más.")
 
     return chunk
 
