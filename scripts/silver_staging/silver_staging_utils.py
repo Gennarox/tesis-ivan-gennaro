@@ -109,7 +109,6 @@ def create_categories_table(conn):
             category_lvl3_slug TEXT NULL,
             created_at TIMESTAMP DEFAULT NOW(),
             category_slug_final TEXT NOT NULL,
-            category_clean TEXT NOT NULL,
             category_final TEXT NOT NULL
             
             --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)

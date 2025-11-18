@@ -38,16 +38,23 @@ def clean_price(series: pd.Series) -> pd.Series:
 
 def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 
-    # Limpieza básica de price
+    # ------------------------------
+    # 1) price → limpiar y convertir
+    # ------------------------------
     chunk["price"] = clean_price(chunk["price"])
 
-    # promotion_price: convertir "0" a NULL
-    chunk.loc[chunk["promotion_price"] == "0", "promotion_price"] = None
+    # ------------------------------
+    # 2) promotion_price:
+    #    - convertir "0" a None antes de limpiar
+    #    - luego usar clean_price
+    # ------------------------------
+    chunk["promotion_price"] = chunk["promotion_price"].replace("0", None)
+    chunk["promotion_price"] = clean_price(chunk["promotion_price"])
 
-    # final_price
-    chunk["final_price"] = (
-        chunk["promotion_price"].combine_first(chunk["price"])
-    )
+    # ------------------------------
+    # 3) final_price = promotion_price si existe, sino price
+    # ------------------------------
+    chunk["final_price"] = chunk["promotion_price"].fillna(chunk["price"])
 
     return chunk
 
