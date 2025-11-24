@@ -7,16 +7,39 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from requests.adapters import HTTPAdapter
+from urllib3.util.ssl_ import create_urllib3_context
 
 # Funciones del proyecto
 import html_utils
 from html_utils import esperar, obtener_max_page_retail, extraer_productos_retail, save_df_as_csv
 
+# %%
+# Ciphers que IIS 8.5 soporta sin bug
+IIS_CIPHERS = (
+    "ECDHE-RSA-AES256-SHA384:"
+    "ECDHE-RSA-AES128-SHA256:"
+    "AES256-GCM-SHA384:"
+    "AES128-GCM-SHA256"
+)
+
+class IIS8CompatibleAdapter(HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        context = create_urllib3_context(
+            ciphers=IIS_CIPHERS,
+            ssl_version=2  # TLSv1.2
+        )
+        kwargs["ssl_context"] = context
+        return super().init_poolmanager(*args, **kwargs)
+
+session = requests.Session()
+session.mount("https://www.stock.com.py", IIS8CompatibleAdapter())
+
 # %% [markdown]
 # ##### Categorias
 
 # %%
-response = requests.get("https://www.stock.com.py/default.aspx")
+response = session.get("https://www.stock.com.py/default.aspx")
 html = response.text
 tree = HTMLParser(html)
 
@@ -86,7 +109,7 @@ for _, row in df_categorias.iterrows():
     print(f"\n🔎 Scrapeando categoría: {category_slug}")
     esperar()
     
-    response = requests.get(categoria_url)
+    response = session.get(categoria_url)
     tree = HTMLParser(response.text)
     max_page = obtener_max_page_retail(tree)
     print(f"📄 Total de páginas: {max_page}")
@@ -96,7 +119,7 @@ for _, row in df_categorias.iterrows():
         print(f"➡️ Página {page}: {page_url}")
         esperar()
 
-        resp = requests.get(page_url)
+        resp = session.get(page_url)
         html_tree = HTMLParser(resp.text)
 
         contexto = {
