@@ -151,3 +151,17 @@ services:
       - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
     volumes:
       - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
+
+    #### GRAFANA ####
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=ellayel2025
+    volumes:
+      - /home/netbookuser/docker-data/UPS-Monitor-data/grafana_data:/var/lib/grafana
+    restart: unless-stopped
