@@ -163,5 +163,5 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=ellayel2025
     volumes:
-      - /home/netbookuser/docker-data/UPS-Monitor-data/grafana_data:/var/lib/grafana
+      - /home/ivanspi/docker-data/webscrapping-tesis/grafana_data:/var/lib/grafana
     restart: unless-stopped
