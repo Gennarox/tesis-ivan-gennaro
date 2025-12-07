@@ -94,23 +94,6 @@ def full_load_categories(conn):
                 "created_at"
             ]
             df = df.reindex(columns=cols_keep, fill_value=None)
-            
-            # --------------------------------------------
-            # 7.5) LIMPIEZA DE DUPLICADOS de S6 pagina vieja
-            # --------------------------------------------
-            # Mantenemos solo la primera aparición de la llave
-            unique_cols = [
-                "snapshot_date", "supermarket", 
-                "category_lvl1_slug", "category_lvl2_slug", "category_lvl3_slug"
-            ]
-
-            rows_before = len(df)
-            # Eliminamos duplicados exactos en el DataFrame de memoria
-            df = df.drop_duplicates(subset=unique_cols, keep="first")
-            rows_after = len(df)
-            
-            if rows_before > rows_after:
-                print(f"   ✂️ Se eliminaron {rows_before - rows_after} registros duplicados de {sup}.")
 
             # 8️⃣ Insertar en PostgreSQL
             try:

@@ -122,21 +122,21 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # Usamos fillna('') en el slug por seguridad, aunque idealmente no debería ser nulo
     chunk["category_key"] = (
         chunk["category_slug_final"].fillna("unknown").astype(str) + "_" + 
-        chunk["supermarket"].astype(str) #+ "_" + 
-        #chunk["snapshot_date_str"]
+        chunk["supermarket"].astype(str) + "_" + 
+        chunk["snapshot_date_str"]
     )
 
     # --------------------------------------------
-    # 5) LIMPIEZA DE DUPLICADOS EN EL CHUNK             (movido a silver)
+    # 5) LIMPIEZA DE DUPLICADOS EN EL CHUNK            
     # --------------------------------------------
     # Este paso fue añadido por duplicaciones en la ingesta de categorias de S6 (pagina vieja)
     # Mantenemos solo la primera aparición de la llave
-    # rows_before = len(chunk)
-    # chunk = chunk.drop_duplicates(subset=["category_key"], keep="first")
-    # rows_after = len(chunk)
+    rows_before = len(chunk)
+    chunk = chunk.drop_duplicates(subset=["category_key"], keep="first")
+    rows_after = len(chunk)
 
-    # if rows_before > rows_after:
-    #     print(f"   ✂ Se eliminaron {rows_before - rows_after} filas duplicadas en este chunk.")
+    if rows_before > rows_after:
+        print(f"   ✂ Se eliminaron {rows_before - rows_after} filas duplicadas en este chunk.")
 
     # --------------------------------------------
     # Logging - Categorias no mapeadas
