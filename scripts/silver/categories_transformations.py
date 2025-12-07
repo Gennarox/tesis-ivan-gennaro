@@ -78,7 +78,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
         np.where(
             chunk["supermarket"] == "casa_rica", chunk["category_lvl2_slug"],
             np.where(
-                chunk["supermarket"].isin(["stock", "s6"]), chunk["category_lvl3_slug"],
+                chunk["supermarket"].isin(["stock", "super_seis"]), chunk["category_lvl3_slug"],
                 np.where(
                     chunk["supermarket"] == "real", chunk["real_lvl1_clean"],
                     None
