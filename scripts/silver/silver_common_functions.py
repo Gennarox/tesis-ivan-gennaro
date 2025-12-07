@@ -144,34 +144,6 @@ def create_products_table(conn):
 # 🗂️ UTILIDADES DE ARCHIVOS Y DIRECTORIOS
 # =============================================================================
 
-def list_supermarkets(base_path):
-    """
-    Lista los supermercados encontrados en el directorio base de outputs Bronze.
-
-    Args:
-        base_path (str): Ruta base, normalmente `/app/scripts/bronze/outputs`.
-
-    Returns:
-        list[str]: Lista de nombres de subdirectorios correspondientes a supermercados.
-    """
-    return [d for d in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, d))]
-
-
-def find_category_files(sup_dir):
-    """
-    Busca archivos de categorías dentro del directorio de un supermercado.
-
-    Args:
-        sup_dir (str): Ruta al directorio del supermercado (ej: `/bronze/outputs/real`).
-
-    Returns:
-        list[str]: Lista de rutas a archivos CSV o JSON encontrados.
-    """
-    csvs = glob.glob(os.path.join(sup_dir, "categorias", "*.csv"))
-    jsons = glob.glob(os.path.join(sup_dir, "categorias", "*.json"))
-    return csvs + jsons
-
-
 def extract_date_from_filename(filename):
     """
     Extrae la fecha del nombre del archivo usando una expresión regular.

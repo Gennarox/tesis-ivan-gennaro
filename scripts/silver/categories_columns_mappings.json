@@ -19,7 +19,7 @@
       "subCategories[].slug": "category_lvl2_slug"
     }
   },
-  "s6": {
+  "super_seis": {
     "type": "csv",
     "path": "super_seis/categorias/",
     "columns": {

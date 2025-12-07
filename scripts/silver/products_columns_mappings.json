@@ -29,7 +29,7 @@
     }
   },
 
-  "superseis": {
+  "super_seis": {
     "type": "csv",
     "path": "super_seis/productos/",
     "columns": {
@@ -55,7 +55,7 @@
     }
   },
 
-  "casarica": {
+  "casa_rica": {
     "type": "csv",
     "path": "casa_rica/productos/",
     "columns": {
