@@ -13,7 +13,7 @@ from silver_common_functions import connect_to_postgres, create_staging_categori
 # CONFIG
 # ============================================================
 
-CHUNKSIZE = 100000
+CHUNKSIZE = 250000
 
 SOURCE_QUERY = """
     SELECT *
