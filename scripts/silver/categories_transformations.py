@@ -144,9 +144,21 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
         chunk["snapshot_date_str"]
     )
 
-    # Limpieza auxiliar
-    chunk.drop(columns=["snapshot_date_str"], inplace=True)
+    # --------------------------------------------
+    # 5) LIMPIEZA DE DUPLICADOS EN EL CHUNK
+    # --------------------------------------------
+    # Este paso fue añadido por duplicaciones en la ingesta de categorias de S6 (pagina vieja)
+    # Mantenemos solo la primera aparición de la llave
+    rows_before = len(chunk)
+    chunk = chunk.drop_duplicates(subset=["category_key"], keep="first")
+    rows_after = len(chunk)
 
+    if rows_before > rows_after:
+        print(f"   ✂ Se eliminaron {rows_before - rows_after} filas duplicadas en este chunk.")
+
+    # --------------------------------------------
+    # Logging - Categorias no mapeadas
+    # --------------------------------------------
     # Guardamos temporalmente las faltantes (luego lo haremos a un archivo log)
     if len(missing) > 0:
         print("⚠ Categorías no mapeadas encontradas en este chunk:")
@@ -162,7 +174,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 # Elimina columnas auxiliares
 # ============================================================
 
-AUX_COLS = ["real_lvl1_clean", "category_clean"]
+AUX_COLS = ["real_lvl1_clean", "category_clean", "snapshot_date_str"]
 
 def drop_auxiliary_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Elimina columnas auxiliares antes de insertar en SQL"""
