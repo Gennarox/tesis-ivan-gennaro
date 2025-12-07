@@ -190,7 +190,7 @@ def main():
         return
 
     # Crear tabla y limpiar destino
-    create_categories_table(conn)
+    create_staging_categories_table(conn)
 
     with conn.cursor() as cur:
         cur.execute("TRUNCATE TABLE silver_staging.categories;")

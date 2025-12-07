@@ -96,7 +96,7 @@ def main():
         return
 
     # Crear tabla si no existe y limpiar la tabla destino=
-    create_products_table(conn)
+    create_staging_products_table(conn)
     
     with conn.cursor() as cur:
         cur.execute("TRUNCATE TABLE silver_staging.products;")
