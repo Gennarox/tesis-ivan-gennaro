@@ -139,10 +139,13 @@ def full_load_products(conn):
             # LIMPIEZA DE DUPLICADOS (Solución al problema del supermercado Real)
             # Si el proceso de mapeo generó filas extra por las listas de categorías, 
             # nos quedamos con una sola fila por producto para esa fecha.
-            initial_rows = len(df)
-            df = df.drop_duplicates(subset=["product_id", "snapshot_date", "supermarket"], keep="first")
-            if len(df) < initial_rows:
-                print(f"  ✂️ Limpieza: Se eliminaron {initial_rows - len(df)} filas duplicadas generadas por el aplanamiento de categorías.")
+            if sup == "real":
+                initial_rows = len(df)
+                # Importante: Asegurarse de que product_id no sea nulo antes de limpiar
+                df = df.drop_duplicates(subset=["product_id", "snapshot_date"], keep="first")
+                
+                if len(df) < initial_rows:
+                    print(f"  ✂️ Limpieza 'Real': Se eliminaron {initial_rows - len(df)} filas duplicadas por categorías.")
 
             # 8️⃣ Insertar en PostgreSQL
             try:
