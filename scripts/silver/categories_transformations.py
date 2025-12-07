@@ -6,8 +6,7 @@ import pandas as pd
 import numpy as np
 from io import StringIO
 from psycopg2 import sql
-
-from silver_staging_utils import connect_to_postgres, create_categories_table
+from silver_common_functions import connect_to_postgres, create_staging_categories_table
 
 
 # ============================================================

@@ -3,10 +3,9 @@ import re
 import json
 import pandas as pd
 import numpy as np
-import psycopg2
-from psycopg2 import sql
 from io import StringIO
-from silver_staging_utils import connect_to_postgres, create_products_table
+from psycopg2 import sql
+from silver_common_functions import connect_to_postgres, create_staging_products_table
 
 
 # ============================================================

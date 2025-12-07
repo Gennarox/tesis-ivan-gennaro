@@ -7,8 +7,14 @@ Estas funciones manejan conexión a PostgreSQL, creación de tablas, detección 
 archivos en la capa Bronze, limpieza de nombres y carga eficiente de datos.
 
 Este módulo está diseñado para ser reutilizado tanto en:
+
+* SIlver schema
 - bronze_to_silver_categories.py
 - bronze_to_silver_products.py
+
+* Silver_staging schema
+- products_transformations.py
+- categories_transformations.py
 """
 
 import os
@@ -20,6 +26,11 @@ import psycopg2
 from psycopg2 import sql
 from io import StringIO
 
+# ===================================================================================================================
+# ===================================================================================================================
+#                                             SILVER & SILVER STAGING SCHEMA
+# ===================================================================================================================
+# ===================================================================================================================
 
 # =============================================================================
 # 💾 CONEXIÓN A BASE DE DATOS
@@ -47,6 +58,13 @@ def connect_to_postgres():
     except Exception as e:
         print("❌ Error conectando a PostgreSQL:", e)
         return None
+    
+
+# ===================================================================================================================
+# ===================================================================================================================
+#                                             SILVER SCHEMA
+# ===================================================================================================================
+# ===================================================================================================================
 
 
 # =============================================================================
@@ -222,3 +240,78 @@ def copy_dataframe_to_postgres(df, conn, table_name):
         raise
     finally:
         cur.close()
+
+# ===================================================================================================================
+# ===================================================================================================================
+#                                             SILVER STAGING SCHEMA
+# ===================================================================================================================
+# ===================================================================================================================
+
+def create_staging_products_table(conn):
+    """
+    Crea la tabla `silver_staging.products` si no existe.
+
+    Esta tabla almacena los productos procesados desde Silver, ya con estructura
+    unificada. Si la tabla ya existe, no realiza cambios destructivos.
+
+    Args:
+        conn (psycopg2.connection): Conexión activa a PostgreSQL.
+    """
+    cur = conn.cursor()
+
+    cur.execute("CREATE SCHEMA IF NOT EXISTS silver_staging;")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS silver_staging.products (
+            snapshot_date DATE NOT NULL,
+            supermarket TEXT NOT NULL,
+            product_id TEXT NULL,
+            product_name TEXT NULL,
+            brand TEXT NULL,
+            price TEXT NULL,
+            unit_of_measure TEXT NULL,
+            is_on_promotion BOOLEAN NULL,
+            promotion_price TEXT NULL,
+            category_slug TEXT NULL,
+            ingestion_time TIMESTAMP NULL,
+            created_at TIMESTAMP DEFAULT NOW(),
+            final_price TEXT NULL
+        );
+    """)
+
+    conn.commit()
+    cur.close()
+
+def create_staging_categories_table(conn):
+    """
+    Crea el esquema `silver_staging` y la tabla `silver_staging.categories` si no existen.
+
+    Esta tabla se usa para almacenar las categorías procesadas desde Bronze.
+    En caso de que ya existan, la función no realiza ningún cambio destructivo.
+
+    Args:
+        conn (psycopg2.connection): Conexión activa a PostgreSQL.
+    """
+    cur = conn.cursor()
+
+    cur.execute("CREATE SCHEMA IF NOT EXISTS silver_staging;")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS silver_staging.categories (
+            snapshot_date DATE NOT NULL,
+            supermarket TEXT NOT NULL,
+            category_lvl1_name TEXT NULL,
+            category_lvl2_name TEXT NULL,
+            category_lvl3_name TEXT NULL,
+            category_lvl1_id TEXT NULL,
+            category_lvl2_id TEXT NULL,
+            category_lvl3_id TEXT NULL,
+            category_lvl1_slug TEXT NULL,
+            category_lvl2_slug TEXT NULL,
+            category_lvl3_slug TEXT NULL,
+            created_at TIMESTAMP DEFAULT NOW(),
+            category_slug_final TEXT NULL,
+            category_final TEXT NULL
+            
+            --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
+        );
+    """)
+
