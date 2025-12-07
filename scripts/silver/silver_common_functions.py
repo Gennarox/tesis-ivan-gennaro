@@ -312,7 +312,7 @@ def create_staging_categories_table(conn):
             created_at TIMESTAMP DEFAULT NOW(),
             category_slug_final TEXT NULL,
             category_final TEXT NULL,
-            category_key TEXT NOT NULL PRIMARY KEY
+            category_key TEXT NOT NULL --PRIMARY KEY
         );
     """)
 
