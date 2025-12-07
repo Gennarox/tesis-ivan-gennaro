@@ -23,7 +23,7 @@ SOURCE_QUERY = """
 TARGET_TABLE = "categories"
 TARGET_SCHEMA = "silver_staging"
 
-MAPPINGS_FILE = '/app/scripts/silver_staging/final_category_mappings.json'
+MAPPINGS_FILE = '/app/scripts/silver/final_category_mappings.json'
 
 # ============================================================
 # HELPERS Y NORMALIZADORES
