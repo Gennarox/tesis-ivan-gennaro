@@ -135,18 +135,14 @@ def full_load_products(conn):
             ]
             df = df.reindex(columns=cols_keep, fill_value=None)
 
-            """
-            # 7️⃣ Tipos y limpieza básica
-            bool_cols = ["is_on_promotion"]
-            for col in bool_cols:
-                if col in df.columns:
-                    df[col] = df[col].astype(str).str.lower().isin(["true", "1", "yes", "si"])
 
-            num_cols = ["price", "discount_percent", "promotion_price"]
-            for col in num_cols:
-                if col in df.columns:
-                    df[col] = pd.to_numeric(df[col], errors="coerce")
-            """
+            # LIMPIEZA DE DUPLICADOS (Solución al problema del supermercado Real)
+            # Si el proceso de mapeo generó filas extra por las listas de categorías, 
+            # nos quedamos con una sola fila por producto para esa fecha.
+            initial_rows = len(df)
+            df = df.drop_duplicates(subset=["product_id", "snapshot_date", "supermarket"], keep="first")
+            if len(df) < initial_rows:
+                print(f"  ✂️ Limpieza: Se eliminaron {initial_rows - len(df)} filas duplicadas generadas por el aplanamiento de categorías.")
 
             # 8️⃣ Insertar en PostgreSQL
             try:
