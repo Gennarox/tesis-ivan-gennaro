@@ -62,13 +62,6 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # Pre-procesamiento de tipos para Keys
     chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
     
-    # PRODUCT_KEY (PK): product_id + supermarket + snapshot_date
-    chunk["product_key"] = (
-        chunk["product_id"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str) + "_" + 
-        chunk["snapshot_date_str"]
-    )
-
     # CATEGORY_KEY (FK): category_slug + supermarket + snapshot_date
     # Nota: Asegúrate que 'category_slug' en productos coincida con la lógica de categorías
     chunk["category_key"] = (

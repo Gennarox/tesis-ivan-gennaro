@@ -275,7 +275,6 @@ def create_staging_products_table(conn):
             ingestion_time TIMESTAMP NULL,
             created_at TIMESTAMP DEFAULT NOW(),
             final_price TEXT NULL,
-            product_key TEXT NOT NULL PRIMARY KEY,
             category_key TEXT NOT NULL
         );
     """)
