@@ -121,8 +121,8 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # Usamos fillna('') en el slug por seguridad, aunque idealmente no debería ser nulo
     chunk["category_key"] = (
         chunk["category_slug_final"].fillna("unknown").astype(str) + "_" + 
-        chunk["supermarket"].astype(str) + "_" + 
-        chunk["snapshot_date_str"]
+        chunk["supermarket"].astype(str) #+ "_" + 
+        #chunk["snapshot_date_str"]
     )
 
     # --------------------------------------------

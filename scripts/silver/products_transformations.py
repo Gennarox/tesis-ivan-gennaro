@@ -66,8 +66,8 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # Nota: Asegúrate que 'category_slug' en productos coincida con la lógica de categorías
     chunk["category_key"] = (
         chunk["category_slug"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str) + "_" + 
-        chunk["snapshot_date_str"]
+        chunk["supermarket"].astype(str) #+ "_" + 
+        #chunk["snapshot_date_str"]
     )
 
     # Limpieza: Eliminamos la columna auxiliar de fecha string si no la quieres en la tabla final
