@@ -311,9 +311,8 @@ def create_staging_categories_table(conn):
             category_lvl3_slug TEXT NULL,
             created_at TIMESTAMP DEFAULT NOW(),
             category_slug_final TEXT NULL,
-            category_final TEXT NULL
-            
-            --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
+            category_final TEXT NULL,
+            category_key TEXT NOT NULL
         );
     """)
 

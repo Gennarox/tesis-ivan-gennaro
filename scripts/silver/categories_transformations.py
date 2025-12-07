@@ -129,6 +129,24 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 
     chunk["category_final"] = chunk.apply(map_final, axis=1)
 
+    # --------------------------------------------
+    # 4) CREACIÓN DE KEYS
+    # --------------------------------------------
+    
+    # Aseguramos fecha como string
+    chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
+
+    # CATEGORY_KEY (PK): category_slug_final + supermarket + snapshot_date
+    # Usamos fillna('') en el slug por seguridad, aunque idealmente no debería ser nulo
+    chunk["category_key"] = (
+        chunk["category_slug_final"].fillna("unknown").astype(str) + "_" + 
+        chunk["supermarket"].astype(str) + "_" + 
+        chunk["snapshot_date_str"]
+    )
+
+    # Limpieza auxiliar
+    chunk.drop(columns=["snapshot_date_str"], inplace=True)
+
     # Guardamos temporalmente las faltantes (luego lo haremos a un archivo log)
     if len(missing) > 0:
         print("⚠ Categorías no mapeadas encontradas en este chunk:")
