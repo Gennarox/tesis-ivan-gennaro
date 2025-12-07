@@ -21,7 +21,7 @@
   },
   "s6": {
     "type": "csv",
-    "path": "s6/categorias/",
+    "path": "super_seis/categorias/",
     "columns": {
       "categoria_nivel_1": "category_lvl1_name",
       "categoria_nivel_2": "category_lvl2_name",

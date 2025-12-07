@@ -31,7 +31,7 @@
 
   "superseis": {
     "type": "csv",
-    "path": "s6/productos/",
+    "path": "super_seis/productos/",
     "columns": {
       "titulo": "product_name",
       "marca": "brand",

@@ -41,7 +41,6 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # 1) price → limpiar y convertir
     # ------------------------------
     chunk["price"] = clean_price(chunk["price"])
-    chunk["category_slug"] = normalize_text(chunk["category_slug"])
 
     # ------------------------------
     # 2) promotion_price:

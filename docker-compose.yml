@@ -41,7 +41,7 @@ services:
       - ~/docker-data/webscrapping-tesis:/app/scripts/bronze/outputs
       - ~/docker-data/webscrapping-tesis/logs:/app/logs
     command: >
-      sh -c "python scripts/bronze/s6.py > /app/logs/s6.log 2>&1"
+      sh -c "python scripts/bronze/super_seis.py > /app/logs/super_seis.log 2>&1"
     restart: unless-stopped
     tty: true
     stdin_open: true

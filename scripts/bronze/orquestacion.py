@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).parent
 scripts = [
     ("Biggie", "biggie.py"),
     ("Supermecado Real", "real.py"),
-    ("Super Seis", "s6.py"),
+    ("Super Seis", "super_seis.py"),
     ("Stock", "stock.py"),
     ("Casa Rica", "casa_rica.py")
 ]

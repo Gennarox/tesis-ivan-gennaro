@@ -61,8 +61,8 @@ df_categorias.head()
 # %%
 save_df_as_csv(
     dataframe = df_categorias,
-    name = 's6_categorias',
-    subfolder = 's6/categorias'
+    name = 'super_seis_categorias',
+    subfolder = 'super_seis/categorias'
 )
 
 # %% [markdown]
@@ -70,7 +70,7 @@ save_df_as_csv(
 
 # %%
 INGESTION_TIME = datetime.now(ZoneInfo("America/Asuncion"))
-SUPERMERCADO = "Super Seis"
+SUPERMERCADO = "super_seis"
 productos_final = []
 selectors = {
     "producto": "div.content",
@@ -117,8 +117,8 @@ df.head()
 # %%
 save_df_as_csv(
     dataframe = df,
-    name = 's6_productos',
-    subfolder = 's6/productos'
+    name = 'super_seis_productos',
+    subfolder = 'super_seis/productos'
 )
 
 

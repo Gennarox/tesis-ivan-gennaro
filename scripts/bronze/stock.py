@@ -92,7 +92,7 @@ save_df_as_csv(
 
 # %%
 INGESTION_TIME = datetime.now(ZoneInfo("America/Asuncion"))
-SUPERMERCADO = "Stock"
+SUPERMERCADO = "stock"
 productos_final = []
 selectors = {
     "producto": "div.producto",

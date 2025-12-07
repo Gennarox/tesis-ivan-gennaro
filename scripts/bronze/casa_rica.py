@@ -74,7 +74,7 @@ df_categorias.nunique()
 # %%
 save_df_as_csv(
     dataframe = df_categorias,
-    name = 'casaRica_categorias',
+    name = 'casa_rica_categorias',
     subfolder = 'casa_rica/categorias'
 )
 
@@ -83,7 +83,7 @@ save_df_as_csv(
 
 # %%
 INGESTION_TIME = datetime.now(ZoneInfo("America/Asuncion"))
-SUPERMERCADO = "Casa Rica"
+SUPERMERCADO = "casa_rica"
 productos_final = []
 selectors = {
     "producto": "a.ecommercepro-LoopProduct-link",
@@ -128,7 +128,7 @@ df.head()
 # %%
 save_df_as_csv(
     dataframe = df,
-    name = 'casaRica_productos',
+    name = 'casa_rica_productos',
     subfolder = 'casa_rica/productos'
 )
 
