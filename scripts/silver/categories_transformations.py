@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from io import StringIO
 from psycopg2 import sql
-from silver_common_functions import connect_to_postgres, create_staging_categories_table
+from silver_common_functions import connect_to_postgres, create_staging_categories_table, normalize_text
 
 
 # ============================================================
@@ -28,24 +28,6 @@ MAPPINGS_FILE = '/app/scripts/silver/final_category_mappings.json'
 # ============================================================
 # HELPERS Y NORMALIZADORES
 # ============================================================
-
-def normalize_text(s):
-    """
-    Normaliza texto para matching:
-    - minúsculas
-    - quitar acentos
-    - dejar solo letras/números
-    - reducir espacios
-    """
-    if s is None:
-        return None
-    s = str(s).strip().lower()
-    s = unicodedata.normalize("NFKD", s)
-    s = "".join(ch for ch in s if not unicodedata.combining(ch))
-    s = re.sub(r"[^a-z0-9\\s]+", " ", s)
-    s = re.sub(r"\\s+", " ", s).strip()
-    return s
-
 
 def load_inverse_mappings():
     """

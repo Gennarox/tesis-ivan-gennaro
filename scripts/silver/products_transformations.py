@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from io import StringIO
 from psycopg2 import sql
-from silver_common_functions import connect_to_postgres, create_staging_products_table
+from silver_common_functions import connect_to_postgres, create_staging_products_table, normalize_text
 
 
 # ============================================================
@@ -41,6 +41,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # 1) price → limpiar y convertir
     # ------------------------------
     chunk["price"] = clean_price(chunk["price"])
+    chunk["category_slug"] = normalize_text(chunk["category_slug"])
 
     # ------------------------------
     # 2) promotion_price:
@@ -60,18 +61,18 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # ------------------------------
 
     # Pre-procesamiento de tipos para Keys
-    chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
+    #chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
     
     # CATEGORY_KEY (FK): category_slug + supermarket + snapshot_date
     # Nota: Asegúrate que 'category_slug' en productos coincida con la lógica de categorías
     chunk["category_key"] = (
         chunk["category_slug"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str) + "_" + 
-        chunk["snapshot_date_str"]
+        chunk["supermarket"].astype(str) #+ "_" + 
+        #chunk["snapshot_date_str"]
     )
 
     # Limpieza: Eliminamos la columna auxiliar de fecha string si no la quieres en la tabla final
-    chunk.drop(columns=["snapshot_date_str"], inplace=True)
+    #chunk.drop(columns=["snapshot_date_str"], inplace=True)
 
     return chunk
 

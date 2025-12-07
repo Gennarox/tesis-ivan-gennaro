@@ -247,6 +247,23 @@ def copy_dataframe_to_postgres(df, conn, table_name):
 # ===================================================================================================================
 # ===================================================================================================================
 
+def normalize_text(s):
+    """
+    Normaliza texto para matching:
+    - minúsculas
+    - quitar acentos
+    - dejar solo letras/números
+    - reducir espacios
+    """
+    if s is None:
+        return None
+    s = str(s).strip().lower()
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+    s = re.sub(r"[^a-z0-9\\s]+", " ", s)
+    s = re.sub(r"\\s+", " ", s).strip()
+    return s
+
 def create_staging_products_table(conn):
     """
     Crea la tabla `silver_staging.products` si no existe.
