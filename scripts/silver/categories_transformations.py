@@ -1,7 +1,6 @@
 import os
 import re
 import json
-import unicodedata
 import pandas as pd
 import numpy as np
 from io import StringIO

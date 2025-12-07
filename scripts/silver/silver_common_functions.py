@@ -21,6 +21,7 @@ import os
 import glob
 import re
 import json
+import unicodedata
 import pandas as pd
 import psycopg2
 from psycopg2 import sql
