@@ -12,7 +12,7 @@ from silver_common_functions import connect_to_postgres, create_staging_categori
 # CONFIG
 # ============================================================
 
-CHUNKSIZE = 250000
+CHUNKSIZE = 100000
 
 SOURCE_QUERY = """
     SELECT *
@@ -35,7 +35,7 @@ def load_inverse_mappings():
     with open(MAPPINGS_FILE, "r", encoding="utf-8") as f:
         mappings = json.load(f)
 
-    inv_maps = {sup: {} for sup in ["biggie", "casa_rica", "real", "s6", "stock"]}
+    inv_maps = {sup: {} for sup in ["biggie", "casa_rica", "real", "super_seis", "stock"]}
 
     for final, mapping in mappings.items():
         for sup, cats in mapping.items():
@@ -115,7 +115,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # --------------------------------------------
     
     # Aseguramos fecha como string
-    chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
+    #chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
 
     # CATEGORY_KEY (PK): category_slug_final + supermarket + snapshot_date
     # Usamos fillna('') en el slug por seguridad, aunque idealmente no debería ser nulo
@@ -130,12 +130,12 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # --------------------------------------------
     # Este paso fue añadido por duplicaciones en la ingesta de categorias de S6 (pagina vieja)
     # Mantenemos solo la primera aparición de la llave
-    rows_before = len(chunk)
-    chunk = chunk.drop_duplicates(subset=["category_key"], keep="first")
-    rows_after = len(chunk)
+    #rows_before = len(chunk)
+    #chunk = chunk.drop_duplicates(subset=["category_key"], keep="first")
+    #rows_after = len(chunk)
 
-    if rows_before > rows_after:
-        print(f"   ✂ Se eliminaron {rows_before - rows_after} filas duplicadas en este chunk.")
+    #if rows_before > rows_after:
+    #    print(f"   ✂ Se eliminaron {rows_before - rows_after} filas duplicadas en este chunk.")
 
     # --------------------------------------------
     # Logging - Categorias no mapeadas
@@ -155,7 +155,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 # Elimina columnas auxiliares
 # ============================================================
 
-AUX_COLS = ["real_lvl1_clean", "category_clean", "snapshot_date_str"]
+AUX_COLS = ["real_lvl1_clean", "category_clean"]
 
 def drop_auxiliary_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Elimina columnas auxiliares antes de insertar en SQL"""

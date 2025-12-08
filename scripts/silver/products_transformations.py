@@ -5,14 +5,14 @@ import pandas as pd
 import numpy as np
 from io import StringIO
 from psycopg2 import sql
-from silver_common_functions import connect_to_postgres, create_staging_products_table, normalize_text
+from silver_common_functions import connect_to_postgres, create_staging_products_table
 
 
 # ============================================================
 # CONFIG
 # ============================================================
 
-CHUNKSIZE = 250000
+CHUNKSIZE = 150000
 SOURCE_QUERY = """
     SELECT *
     FROM silver.products
