@@ -166,6 +166,24 @@ services:
     volumes:
       - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
 
+
+  gold:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: gold_processing
+    command: >
+        sh -c "
+          echo '🚀 Iniciando Gold...';
+          python -u scripts/gold/categories.py 2>&1 | tee /app/logs/categories_gold.log
+        "
+    depends_on:
+        - postgres
+    environment:
+        - DB_DSN=host=postgres_db port=5432 dbname=myapp user=admin password=secure_password
+    volumes:
+        - /home/ivanspi/docker-data/webscrapping-tesis/logs:/app/logs
+
 # ===================================================================================================================
 #                                            GRAFANA
 # ===================================================================================================================
