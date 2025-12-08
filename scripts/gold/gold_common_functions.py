@@ -29,7 +29,7 @@ def connect_to_postgres():
         print("❌ Error conectando a PostgreSQL:", e)
         return None
 
-def create_staging_products_table(conn):
+def create_gold_products_table(conn):
     """
     Crea la tabla `gold.products` si no existe.
 
@@ -64,7 +64,7 @@ def create_staging_products_table(conn):
     conn.commit()
     cur.close()
 
-def create_staging_categories_table(conn):
+def create_gold_categories_table(conn):
     """
     Crea el esquema `gold` y la tabla `gold.categories` si no existen.
 

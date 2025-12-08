@@ -1,6 +1,6 @@
 import pandas as pd
 from psycopg2 import sql
-from gold_common_functions import connect_to_postgres, create_gold_categories_table
+from gold_common_functions import connect_to_postgres, create_gold_categories_table, create_gold_products_table
 
 # ============================================================
 # CONFIG
