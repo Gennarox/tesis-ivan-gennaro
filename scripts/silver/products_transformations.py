@@ -71,6 +71,7 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     )
 
     chunk["product_key"] = (
+        chunk["product_id"].astype(str) + "_" +
         chunk["product_name"].astype(str) + "_" + 
         chunk["supermarket"].astype(str) + "_" + 
         chunk["snapshot_date_str"]
