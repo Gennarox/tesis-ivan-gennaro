@@ -58,7 +58,7 @@ def create_gold_products_table(conn):
             created_at TIMESTAMP DEFAULT NOW(),
             final_price TEXT NULL,
             category_key TEXT NOT NULL,
-            product_key TEST NOT NULL PRIMARY KEY
+            product_key TEXT NOT NULL PRIMARY KEY
         );
     """)
 
