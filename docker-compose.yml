@@ -175,7 +175,7 @@ services:
     command: >
         sh -c "
           echo '🚀 Iniciando Gold...';
-          python -u scripts/gold/categories.py 2>&1 | tee /app/logs/categories_gold.log
+          python -u scripts/gold/gold_processing.py 2>&1 | tee /app/logs/gold_processing.log
         "
     depends_on:
         - postgres

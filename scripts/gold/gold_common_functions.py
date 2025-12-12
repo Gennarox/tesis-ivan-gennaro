@@ -54,10 +54,11 @@ def create_gold_products_table(conn):
             is_on_promotion BOOLEAN NULL,
             promotion_price TEXT NULL,
             category_slug TEXT NULL,
-            --ingestion_time TIMESTAMP NULL,
+            ingestion_time TIMESTAMP NULL,
             created_at TIMESTAMP DEFAULT NOW(),
             final_price TEXT NULL,
-            category_key TEXT NOT NULL
+            category_key TEXT NOT NULL,
+            product_key TEST NOT NULL PRIMARY KEY
         );
     """)
 
