@@ -70,6 +70,12 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
         #chunk["snapshot_date_str"]
     )
 
+    chunk["product_key"] = (
+        chunk["product_name"].astype(str) + "_" + 
+        chunk["supermarket"].astype(str) + "_" + 
+        chunk["snapshot_date_str"]
+    )
+
     # Limpieza: Eliminamos la columna auxiliar de fecha string si no la quieres en la tabla final
     chunk.drop(columns=["snapshot_date_str"], inplace=True)
 
