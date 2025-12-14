@@ -32,14 +32,14 @@
     "biggie": null,
     "casa_rica": "pastas frescas",
     "real": "pastas frescas",
-    "super_seis": "pastas frescas",
+    "super_seis": ["pastas frescas", "pastas"],
     "stock": "pastas frescas"
   },
   "Bazar": {
     "biggie": "varios",
     "casa_rica": "bazar",
     "real": "bazar y hogar",
-    "super_seis": "bazar",
+    "super_seis": ["bazar", "hogar y bazar"],
     "stock": "bazar"
   },
   "Bebes": {
@@ -97,7 +97,7 @@
       "fiambreria","queseria"
   ],
     "real": "fiambres y quesos",
-    "super_seis": "fiambres y quesos",
+    "super_seis": ["fiambres y quesos", "fiambreria"],
     "stock": "fiambres y quesos"
   },
   "Frutas y Verduras": {
@@ -111,7 +111,7 @@
     "biggie": "libreria",
     "casa_rica": null,
     "real": null,
-    "super_seis": "libreria",
+    "super_seis": ["libreria", "juguetes y libreria"],
     "stock": "libreria"
   },
   "Limpieza": {
@@ -132,7 +132,7 @@
     "biggie": "mascotas",
     "casa_rica": "mascotas",
     "real": "mascotas",
-    "super_seis": "mascotas y hogar",
+    "super_seis": ["mascotas y hogar", "mascotas"],
     "stock": "mascotas y hogar"
   },
   "Panadería": {
@@ -149,14 +149,15 @@
       "None", "asado"
     ],
     "casa_rica": [
-      "promociones y ofertas", "rotiseria"
+      "promociones y ofertas", "rotiseria", "canastas y pan dulce", "exclusivos casa rica",
+      "gift card", "productos eco", "sabores de asia"
     ],
     "real": [
       "desactivados", "navideños", "carbones y encendedores",
       "informatica y electronica", "rostiseria"
     ],
     "super_seis": [
-      "jugueteria", "ferreteria"
+      "jugueteria", "ferreteria", "reposteria"
     ],
     "stock": "jugueteria"
   }
