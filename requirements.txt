@@ -4,3 +4,5 @@ requests
 selectolax
 psycopg2-binary
 python-dotenv
+matplotlib
+seaborn

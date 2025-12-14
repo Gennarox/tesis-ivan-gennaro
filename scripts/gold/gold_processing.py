@@ -66,7 +66,8 @@ def load_products(conn):
         "category_slug", 
         "ingestion_time", 
         "created_at", 
-        "final_price", 
+        "final_price",
+        "tom_brand",
         "category_key", 
         "product_key"
     ]

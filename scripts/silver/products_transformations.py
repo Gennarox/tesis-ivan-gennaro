@@ -22,7 +22,7 @@ TARGET_SCHEMA = "silver_staging"
 
 
 # ============================================================
-# TRANSFORMACIONES
+# TRANSFORMACIONES BASE
 # ============================================================
 
 def clean_price(series: pd.Series) -> pd.Series:
@@ -34,6 +34,67 @@ def clean_price(series: pd.Series) -> pd.Series:
         .pipe(pd.to_numeric, errors="coerce")
     )
 
+# ============================================================
+# FLAGGING DE MARCAS TOM
+# ============================================================
+
+def flag_tom_brands(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normaliza el nombre del producto y asigna la marca TOM.
+    """
+    tom_brands = {
+        'Pechugón': r'pechugon',
+        'Cavallaro': r'cavallaro',
+        'Tres Leones': r'tres\s*leones',
+        'Lactolanda': r'lactolanda',
+        'Kurupí': r'kurupi',
+        'Ochsi': r'ochsi',
+        'Hellmann\'s': r'hellmann',
+        'Trébol': r'trebol',
+        'Coca-Cola': r'coca.*cola',
+        'Sedal': r'sedal',
+        'Pedigree': r'pedigree',
+        'Mar': r'\bmar\b', 
+        'Nikito': r'nikito',
+        'OMO': r'\bomo\b',
+        'Guaraní': r'guarani',
+        'Mapex': r'mapex',
+        'Caricias': r'caricia',
+        'Ades': r'\bades\b',
+        'Anita': r'\banita\b',
+        'Brahma': r'brahma',
+        'Red Bull': r'red\s*bull',
+        'Nescafé': r'nescafe',
+        'Huggies': r'huggies',
+        'Incabril': r'incabril',
+        'Colgate': r'colgate',
+        'Rexona': r'rexona',
+        'Nestlé': r'nestle'
+    }
+
+    # 1. Normalización del nombre
+    df['search_term'] = (
+        df['product_name']
+        .str.lower()
+        .str.normalize('NFKD')
+        .str.encode('ascii', errors='ignore')
+        .str.decode('utf-8')
+    )
+
+    # 2. Asignación del flag
+    df['tom_brand'] = 'Otros' 
+
+    for brand_label, pattern in tom_brands.items():
+        mask = df['search_term'].str.contains(pattern, regex=True, na=False)
+        df.loc[mask, 'tom_brand'] = brand_label
+
+    # 3. Limpieza y retorno
+    df.drop(columns=['search_term'], inplace=True)
+    return df
+
+# ============================================================
+# TRANSFORMACIONES
+# ============================================================
 
 def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 
@@ -43,31 +104,32 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     chunk["price"] = clean_price(chunk["price"])
 
     # ------------------------------
-    # 2) promotion_price:
-    #    - convertir "0" a None antes de limpiar
-    #    - luego usar clean_price
+    # 2) promotion_price
     # ------------------------------
     chunk["promotion_price"] = chunk["promotion_price"].replace("0", None)
     chunk["promotion_price"] = clean_price(chunk["promotion_price"])
 
     # ------------------------------
-    # 3) final_price = promotion_price si existe, sino price
+    # 3) final_price
     # ------------------------------
     chunk["final_price"] = chunk["promotion_price"].fillna(chunk["price"])
+    
+    # ------------------------------
+    # 4) FLAGGING DE MARCAS TOM
+    # ------------------------------
+    chunk = flag_tom_brands(chunk) 
 
     # ------------------------------
-    # 4) CREACIÓN DE KEYS (NUEVO)
+    # 5) CREACIÓN DE KEYS
     # ------------------------------
 
     # Pre-procesamiento de tipos para Keys
     chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
     
-    # CATEGORY_KEY (FK): category_slug + supermarket + snapshot_date
-    # Nota: Asegúrate que 'category_slug' en productos coincida con la lógica de categorías
+    # CATEGORY_KEY
     chunk["category_key"] = (
         chunk["category_slug"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str) #+ "_" + 
-        #chunk["snapshot_date_str"]
+        chunk["supermarket"].astype(str)
     )
 
     chunk["product_key"] = (
@@ -83,6 +145,8 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     return chunk
 
 
+# ============================================================
+# ... (El resto del script, insert_chunk_copy y main, se mantiene igual)
 # ============================================================
 # INSERCIÓN RÁPIDA A POSTGRES (COPY FROM)
 # ============================================================

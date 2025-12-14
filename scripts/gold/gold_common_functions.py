@@ -57,6 +57,7 @@ def create_gold_products_table(conn):
             ingestion_time TIMESTAMP NULL,
             created_at TIMESTAMP DEFAULT NOW(),
             final_price TEXT NULL,
+            tom_brand TEST NOT NULL,
             category_key TEXT NOT NULL,
             product_key TEXT NOT NULL PRIMARY KEY
         );
@@ -80,18 +81,7 @@ def create_gold_categories_table(conn):
     cur.execute("CREATE SCHEMA IF NOT EXISTS gold;")
     cur.execute("""
         CREATE TABLE IF NOT EXISTS gold.categories (
-            --snapshot_date DATE NOT NULL,
             supermarket TEXT NOT NULL,
-            --category_lvl1_name TEXT NULL,
-            --category_lvl2_name TEXT NULL,
-            --category_lvl3_name TEXT NULL,
-            --category_lvl1_id TEXT NULL,
-            --category_lvl2_id TEXT NULL,
-            --category_lvl3_id TEXT NULL,
-            --category_lvl1_slug TEXT NULL,
-            --category_lvl2_slug TEXT NULL,
-            --category_lvl3_slug TEXT NULL,
-            --created_at TIMESTAMP DEFAULT NOW(),
             category_slug_final TEXT NULL,
             category_final TEXT NULL,
             category_key TEXT NOT NULL PRIMARY KEY
