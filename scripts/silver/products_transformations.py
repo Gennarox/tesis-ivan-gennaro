@@ -144,9 +144,6 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
 
     return chunk
 
-
-# ============================================================
-# ... (El resto del script, insert_chunk_copy y main, se mantiene igual)
 # ============================================================
 # INSERCIÓN RÁPIDA A POSTGRES (COPY FROM)
 # ============================================================
