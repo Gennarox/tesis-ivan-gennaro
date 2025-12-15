@@ -122,25 +122,18 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
     # ------------------------------
     # 5) CREACIÓN DE KEYS
     # ------------------------------
-
-    # Pre-procesamiento de tipos para Keys
-    chunk["snapshot_date_str"] = chunk["snapshot_date"].astype(str)
     
-    # CATEGORY_KEY
     chunk["category_key"] = (
-        chunk["category_slug"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str)
+        chunk["category_slug"].astype(str).str.lower().str.strip() + "_" + 
+        chunk["supermarket"].astype(str).str.lower().str.strip()
     )
 
     chunk["product_key"] = (
-        chunk["product_id"].astype(str) + "_" +
-        chunk["product_name"].astype(str) + "_" + 
-        chunk["supermarket"].astype(str) + "_" + 
-        chunk["snapshot_date_str"]
+        chunk["product_id"].astype(str).str.lower().str.strip() + "_" +
+        chunk["product_name"].astype(str).str.lower().str.strip() + "_" + 
+        chunk["supermarket"].astype(str).str.lower().str.strip() + "_" + 
+        chunk["snapshot_date"].astype(str)
     )
-
-    # Limpieza: Eliminamos la columna auxiliar de fecha string si no la quieres en la tabla final
-    chunk.drop(columns=["snapshot_date_str"], inplace=True)
 
     return chunk
 
