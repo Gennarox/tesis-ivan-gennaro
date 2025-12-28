@@ -47,9 +47,9 @@ def load_categories(conn):
 
 
 def load_products(conn):
-    """Carga y enforza unicidad para la tabla de hechos de productos (usa product_key)."""
+    """Carga y enforza unicidad para la tabla de hechos de productos (usa product_hash)."""
     
-    # 1) Asegurar que la tabla existe (y tiene la PK 'product_key')
+    # 1) Asegurar que la tabla existe (y tiene la PK 'product_hash')
     create_gold_products_table(conn)
     
     # 2) Definición de columnas a insertar
@@ -69,7 +69,8 @@ def load_products(conn):
         "final_price",
         "tom_brand",
         "category_key", 
-        "product_key"
+        "product_key",
+        "product_hash"
     ]
     columns_sql = ", ".join(columns_list)
     
@@ -78,7 +79,7 @@ def load_products(conn):
         INSERT INTO {TARGET_PRODUCT_TABLE} ({columns_sql})
         SELECT {columns_sql}
         FROM {SOURCE_PRODUCT_TABLE}
-        ON CONFLICT (product_key) DO NOTHING; 
+        ON CONFLICT (product_hash) DO NOTHING; 
     """
 
     with conn.cursor() as cur:

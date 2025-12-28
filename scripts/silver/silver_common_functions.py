@@ -99,7 +99,6 @@ def create_categories_table(conn):
             category_lvl2_slug TEXT NULL,
             category_lvl3_slug TEXT NULL,
             created_at TIMESTAMP DEFAULT NOW()
-            --PRIMARY KEY (snapshot_date, supermarket, category_lvl1_name, category_lvl2_name, category_lvl3_name)
         );
     """)
 
@@ -267,7 +266,8 @@ def create_staging_products_table(conn):
             final_price NUMERIC NULL,
             tom_brand TEXT NOT NULL,
             category_key TEXT NOT NULL,
-            product_key TEXT NOT NULL
+            product_key TEXT NOT NULL,
+            product_hash TEXT NOT NULL
         );
     """)
 

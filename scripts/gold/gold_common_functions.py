@@ -59,7 +59,8 @@ def create_gold_products_table(conn):
             final_price NUMERIC NULL,
             tom_brand TEXT NOT NULL,
             category_key TEXT NOT NULL,
-            product_key TEXT NOT NULL PRIMARY KEY
+            product_key TEXT NOT NULL,
+            product_hash TEXT NOT NULL PRIMARY KEY    
         );
     """)
 
