@@ -132,7 +132,13 @@ def transform_chunk(chunk: pd.DataFrame) -> pd.DataFrame:
         chunk["product_id"].astype(str).str.lower().str.strip() + "_" +
         chunk["product_name"].astype(str).str.lower().str.strip() + "_" + 
         chunk["supermarket"].astype(str).str.lower().str.strip() #+ "_" + 
-        #chunk["snapshot_date"].astype(str)
+    )
+
+    chunk["product_hash"] = (
+        chunk["product_id"].astype(str).str.lower().str.strip() + "_" +
+        chunk["product_name"].astype(str).str.lower().str.strip() + "_" + 
+        chunk["supermarket"].astype(str).str.lower().str.strip() + "_" + 
+        chunk["snapshot_date"].astype(str)
     )
 
     return chunk
