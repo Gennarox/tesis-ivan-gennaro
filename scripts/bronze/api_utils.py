@@ -15,7 +15,7 @@ from typing import Union
      Este archivo contiene funciones utilitarias para 
      interactuar con APIs ocultas utilizadas en el 
      web scraping de los supermercados **Biggie**, 
-     **Real** y **Casa Rica**.
+     **Real**
 =========================================================
 """
 
