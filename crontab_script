@@ -1,0 +1,32 @@
+ivanspi@ivanspi:~ $ crontab -l
+
+# GIT PULL
+00 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/git pull origin development 
+
+# ===================================================================================
+#	SCRAPPERS							10 HS X7
+# ===================================================================================
+
+# DOCKER BUILD
+05 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose build biggie real superseis stock casa_rica monitor
+
+# MONITOR
+10 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm monitor
+
+# DOCKER RUN
+15 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm biggie 
+15 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm real
+15 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm superseis
+15 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm stock
+15 15 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose run --rm casa_rica 
+
+# =================================================================================== 
+#       SILVER > SILVER STAGING > GOLD					23 HS X7
+# ===================================================================================
+
+# GIT PULL
+00 23 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/git pull origin development
+
+# DOCKEER BUILD AND RUN
+10 23 * * * cd /home/ivanspi/repos/tesis-ivan-gennaro && /usr/bin/docker compose build silver silver_staging gold && /usr/bin/docker compose run --rm silver && /usr/bin/docker compose run --rm silver_staging && /usr/bin/docker compose run --rm gold
+
